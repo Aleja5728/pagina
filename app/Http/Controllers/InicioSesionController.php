@@ -23,7 +23,7 @@ class InicioSesionController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return view('pagina_inicio.pagina_inicio');
+            return redirect()->route('pagina-inicio');
         };
 
         return back()->withErrors(['invalid_credentials' => 'Usuario o contraseña invalida'])->withInput();

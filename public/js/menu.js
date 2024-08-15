@@ -31,7 +31,8 @@ cerrar_modal.addEventListener("click", (e) => {
 var configuracion = document.querySelector(".configuracion");
 configuracion.addEventListener("click", (e) => {
     e.preventDefault;
-    location.href ="pagina-configuracion";
+    // location.href ="pagina-configuracion";
+    location.href ="{{ route('admin/pagina-configuracion') }}";
 });
 
 // Editar informacióN
