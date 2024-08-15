@@ -35,7 +35,6 @@ class UsuariosController extends Controller
             'nombre' => 'required|min:3',
             'apellido' => 'required|min:3',
             'numero_documento' => 'required|min:3|integer|unique:usuarios,numero_documento',
-            'genero' => 'required',
             'telefono' => 'integer',
             'password' => 'required|min:8',
             'email' => 'required|email|unique:usuarios,email',

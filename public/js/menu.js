@@ -27,26 +27,3 @@ cerrar_modal.addEventListener("click", (e) => {
     modal_informacion.style.display = "none";
 });
 
-// Redirección a página de configuración
-var configuracion = document.querySelector(".configuracion");
-configuracion.addEventListener("click", (e) => {
-    e.preventDefault;
-    // location.href ="pagina-configuracion";
-    location.href ="{{ route('admin/pagina-configuracion') }}";
-});
-
-// Editar informacióN
-var boton_editar = document.querySelector(".boton_editar");
-boton_editar.addEventListener("click", (e) => {
-    e.preventDefault;
-    document.querySelector(".nombre").disabled = false;
-    document.querySelector(".nombre").style.borderColor = "black";
-    document.querySelector(".apellido").disabled = false;
-    document.querySelector(".apellido").style.borderColor = "black";
-    document.querySelector(".numero_documento").disabled = false;
-    document.querySelector(".numero_documento").style.borderColor = "black";
-    document.querySelector(".telefono").disabled = false;
-    document.querySelector(".telefono").style.borderColor = "black";
-    document.querySelector(".correo").disabled = false;
-    document.querySelector(".correo").style.borderColor = "black";
-});

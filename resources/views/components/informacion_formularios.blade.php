@@ -12,11 +12,11 @@
 
             <div class="relative">
                 <p class="text-sm font-medium"> {{ $titulo ?? 'Titulo de formulario' }} </p>
-                <button class="absolute right-0 top-0">
-                    <img src=" {{ asset('img/puntos.png') }} " alt="Tres puntos" class="w-5 puntos">
+                <button class="absolute right-0 top-0 puntos">
+                    <img src=" {{ asset('img/puntos.png') }} " alt="Tres puntos" class="w-5 ">
                 </button>
 
-                <div class="boton_informe bg-[#80B9F7] w-32 h-10 p-2 rounded-lg text-center absolute right-0 top-8">
+                <div class="boton_informe bg-[#80B9F7] w-32 h-10 p-2 rounded-lg text-center ">
                     <button class="text-xs font-medium">
                         Descargar informe
                     </button>
@@ -36,21 +36,4 @@
 
 
 
-<script>
-    // Tarjeta de información
-    var puntos = document.querySelector(".puntos");
-    var boton_informe = document.querySelector(".boton_informe");
-    var tarjeta_informacion = document.querySelector(".tarjeta_informacion");
-    puntos.addEventListener("click", (e) => {
-        e.preventDefault;
-        boton_informe.style.display = "block";
-    })
-    boton_informe.addEventListener("click", (e) => {
-        e.preventDefault;
-        alert("boton");
-    })
-    tarjeta_informacion.addEventListener("mouseleave", (e) => {
-        e.preventDefault;
-        boton_informe.style.display = "none";
-    });
-</script>
+<script src="{{asset('js/informacion_formularios.js')}}"></script>
