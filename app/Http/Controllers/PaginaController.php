@@ -9,9 +9,9 @@ class PaginaController extends Controller
 {
     public function index(){
 
+        
         $usuarios = User::all();
         
-
         return view("pagina_inicio.pagina_inicio", compact('usuarios'));
     }
 

@@ -27,7 +27,7 @@ class UsuariosController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Arreglar errores de validacion
      */
     public function store(Request $request)
     {
@@ -63,7 +63,7 @@ class UsuariosController extends Controller
             // Definir variable para url
             $direccionImagen = "foto_perfil/";
             // Asignacion de nombre
-            $nombreImagen = time() . "-" . $request -> nombre . " " . $request -> apellido ;
+            $nombreImagen = $request -> nombre . " " . $request -> apellido ;
             // Subir imagen a carpeta
             $descargaImagen = $request->file("foto_perfil")->move($direccionImagen, $nombreImagen);
             // Subir imagen a base de datos
