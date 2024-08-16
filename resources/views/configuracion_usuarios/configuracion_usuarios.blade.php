@@ -29,7 +29,7 @@
             </button>
         </div>
         <!-- Buscar usuario -->
-        <form action="configuracion-usuarios" method="GET">
+        <form action="{{ route('usuarios.index')}}" method="GET">
             <div class="absolute right-12 barra_busqueda">
                 <div>
                     <div>
@@ -85,7 +85,7 @@
                                 </button>
                             </form>
 
-                            <form action="{{ route('eliminar_usuarios', $usuario->id) }}" method="post">
+                            <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="post">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="px-3">

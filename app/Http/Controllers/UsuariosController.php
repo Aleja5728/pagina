@@ -108,7 +108,7 @@ class UsuariosController extends Controller
         $usuarios->tipo_funcionario = $request->tipo_funcionario;
         $usuarios->cargo = $request->cargo;
         $usuarios->rol = $request->rol;
-        $usuarios->password = $request->password;
+        $usuarios->password = bcrypt($request->password);
         // Guardar imagen
         if ($request->hasFile('foto_perfil')) {
             //Asignar imagen a una variable
@@ -125,7 +125,7 @@ class UsuariosController extends Controller
 
         $usuarios->save();
 
-        return redirect('configuracion-usuarios');
+        return redirect() -> route('configuracion-usuarios');
     }
 
     /**

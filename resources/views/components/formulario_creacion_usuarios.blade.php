@@ -1,7 +1,7 @@
 <!-- Formulario para creación de usuarios -->
 <section class="formulario fixed w-full h-[80%] top-14">
     <div class="bg-gray-100 w-5/6 h-full mx-auto overflow-y-auto mt-2">
-        <form action="{{ route('registro_usuarios') }}" method="post" class="px-10 py-2" enctype="multipart/form-data">
+        <form action="{{ route('usuarios.store') }}" method="post" class="px-10 py-2" enctype="multipart/form-data">
             @csrf
             <div class="space-y-12">
                 <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">

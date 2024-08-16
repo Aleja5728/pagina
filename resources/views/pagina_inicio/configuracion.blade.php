@@ -9,7 +9,7 @@
 
     <div class="grid grid-cols-3 gap-x-6 m-10 mt-12">
 
-        <a href="{{ route('configuracion-usuarios') }}">
+        <a href="{{ route('usuarios.index') }}">
             <div>
                 <button
                     class="boton_usuarios w-full h-36 m-2 bg-gradient-to-r from-[#68CA6E] to-[#47BF4F] shadow-md hover:from-[#47BF4F] hover:to-[#68CA6E]">

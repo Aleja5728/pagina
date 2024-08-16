@@ -16,7 +16,7 @@
                     <img src=" {{ asset('img/puntos.png') }} " alt="Tres puntos" class="w-5 ">
                 </button>
 
-                <div class="boton_informe bg-[#80B9F7] w-32 h-10 p-2 rounded-lg text-center ">
+                <div class="boton_informe bg-[#80B9F7] w-32 h-10 p-2 rounded-lg text-center absolute right-0 top-8">
                     <button class="text-xs font-medium">
                         Descargar informe
                     </button>

@@ -5,7 +5,7 @@
 @section('seccion')
     <section class="fixed w-full h-[80%] modal top-14">
         <div class="bg-gray-100 w-5/6 h-full mx-auto overflow-y-auto mt-2">
-            <form action="{{ route('modificar_usuarios', $usuarios->id) }}" method="post" class="px-10 py-2"
+            <form action="{{ route('usuarios.update', $usuarios->id) }}" method="post" class="px-10 py-2"
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -163,6 +163,18 @@
                             <label for="contratista">VISOR</label>
                         </div>
 
+                        <div class="sm:col-span-3">
+                            <label for="password"
+                                class="block text-sm font-medium leading-6 text-gray-900">Contraseña</label>
+                                <div class="text-xs text-red-400">
+                                    @error('password')  {{$message}}   @enderror
+                                </div>
+                            <div class="mt-2">
+                                <input type="password" name="password" id="password"
+                                    class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
+                            </div>
+                        </div>
+
                         <div class="col-span-full">
                             <label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900">Foto de
                                 perfil</label>
@@ -187,9 +199,11 @@
                             </div>
                         </div>
 
+                        <a href="{{route('usuarios.index')}}">
                         <div class="sm:col-start-5 mb-5 bg-[#DDD] hover:bg-[#CCC] p-2 text-center cursor-pointer volver">
                             <input type="button" value="Volver" class="cursor-pointer">
                         </div>
+                    </a>
                         <div class="sm:col-start-6 mb-5 bg-[#DDD] hover:bg-[#CCC] p-2 text-center cursor-pointer">
                             <input type="submit" value="Actualizar usuario" class="cursor-pointer">
                         </div>
@@ -201,12 +215,3 @@
     </section>
 @endsection
 
-@section('script')
-    <script>
-        var volver = document.querySelector(".volver")
-        volver.addEventListener("click", (e) => {
-            e.preventDefault;
-            window.history.back();
-        })
-    </script>
-@endsection
