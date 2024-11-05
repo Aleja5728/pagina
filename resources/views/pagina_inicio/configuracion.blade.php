@@ -9,6 +9,7 @@
 
     <div class="grid grid-cols-3 gap-x-6 m-10 mt-12">
 
+        @can('usuarios.index')  <!-- Bloquear sección dependiendo el permiso -->
         <a href="{{ route('usuarios.index') }}">
             <div>
                 <button
@@ -24,6 +25,7 @@
                 </button>
             </div>
         </a>
+        @endcan
 
 
         <a href="#">

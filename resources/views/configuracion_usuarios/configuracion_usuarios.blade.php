@@ -29,7 +29,7 @@
             </button>
         </div>
         <!-- Buscar usuario -->
-        <form action="{{ route('usuarios.index')}}" method="GET">
+        <form action="{{ route('usuarios.index') }}" method="GET">
             <div class="absolute right-12 barra_busqueda">
                 <div>
                     <div>
@@ -52,68 +52,84 @@
 
     </div>
 
-    <!-- Vista CRUD -->
-    <div class="static  m-10 h-80">
-        <table class="table-auto w-full">
-            <thead>
-                <tr class="bg-[#3DAE2B]">
-                    <th class="px-4 py-2 text-left">Nombre</th>
-                    <th class="px-4 py-2 text-left">Apellidos</th>
-                    <th class="px-4 py-2 text-left">Número de documento</th>
-                    <th class="px-4 py-2 text-left">Teléfono</th>
-                    <th class="px-4 py-2 text-left">Dependencia</th>
-                    <th class="px-4 py-2 text-left">Rol</th>
-                    <th class="px-4 py-2 text-left">Acciones</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach ($usuarios as $usuario)
-                    <tr class="bg-[#fff] border-b-[1px] border-b-[#999]">
-                        <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->nombre }}</td>
-                        <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->apellido }}</td>
-                        <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->numero_documento }} </td>
-                        <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->telefono }}</td>
-                        <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->dependencia }}</td>
-                        <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->rol }}</td>
-                        <td class="flex pt-2">
-                            <form action="{{ route('editar_usuarios', $usuario->id) }}" method="post">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" class="px-3">
-                                    <img src="{{ asset('img/editar_crud.png') }}" alt="editar usuario" class="w-6">
-                                </button>
-                            </form>
-
-                            <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="post">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="px-3">
-                                    <img src="{{ asset('img/eliminar_crud.png') }}" alt="eliminar usuario" class="w-6">
-                                </button>
-                            </form>
-                        </td>
+    @if ($usuarios->count())
+        <!-- Vista CRUD -->
+        <div class="static  m-10 h-80">
+            <table class="table-auto w-full">
+                <thead>
+                    <tr class="bg-[#3DAE2B]">
+                        <th class="px-4 py-2 text-left">Nombre</th>
+                        <th class="px-4 py-2 text-left">Apellidos</th>
+                        <th class="px-4 py-2 text-left">Número de documento</th>
+                        <th class="px-4 py-2 text-left">Teléfono</th>
+                        <th class="px-4 py-2 text-left">Dependencia</th>
+                        <th class="px-4 py-2 text-left">Rol</th>
+                        <th class="px-4 py-2 text-left">Acciones</th>
                     </tr>
-                @endforeach
-            </tbody>
+                </thead>
+
+                <tbody>
+                    @foreach ($usuarios as $usuario)
+                        <tr class="bg-[#fff] border-b-[1px] border-b-[#999]">
+                            <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->nombre }}</td>
+                            <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->apellido }}</td>
+                            <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->numero_documento }} </td>
+                            <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->telefono }}</td>
+                            <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->dependencia }}</td>
+                            {{-- <td class="px-4 py-2 text-left text-[#666]"><img src="{{asset($usuario->foto_perfil)}}" alt=""></td> --}}
+                            <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->rol }}</td>
+                            <td class="flex pt-2">
+                                <form action="{{ route('usuarios.edit', $usuario->id) }}" method="post">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="px-3">
+                                        <img src="{{ asset('img/editar_crud.png') }}" alt="editar usuario" class="w-6">
+                                    </button>
+                                </form>
+
+                                <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="px-3">
+                                        <img src="{{ asset('img/eliminar_crud.png') }}" alt="eliminar usuario"
+                                            class="w-6">
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
 
 
-        </table>
+            </table>
 
 
-    </div>
+        </div>
 
-    <!-- Paginación de usuarios -->
-    <div class="">
-        {{ $usuarios->links('pagination::tailwind') }}
-    </div>
+        <!-- Paginación de usuarios -->
+        <div class="">
+            {{ $usuarios->links('pagination::tailwind') }}
+        </div>
+    @else
+        <div id="alert-1"
+            class="flex m-10 p-4 mb-4 text-blue-800 rounded-lg bg-blue-50"
+            role="alert">
+            
+            <div class="ms-3 text-base font-medium">
+                No hay registros
+            </div>
+        </div>        
+
+    @endif
+
 
     <!-- Formulario de creación -->
     <x-formulario_creacion_usuarios class="formulario"></x-formulario_creacion_usuarios>
 
+
+
 @endsection
 
 @section('script')
-    <script src="{{asset('js/menu.js')}}"></script>
     <script src="{{asset('js/crear_usuario.js')}}"></script>
 @endsection

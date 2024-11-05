@@ -12,38 +12,38 @@
                 <div class="space-y-12">
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                         <div class="sm:col-span-3">
-                            <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombres
+                            <label class="block text-sm font-medium leading-6 text-gray-900">Nombres
                                 completos</label>
                             <div class="mt-2">
-                                <input type="text" name="nombre" id="nombre" value="{{ $usuarios->nombre }}"
+                                <input type="text" name="nombre" value="{{ $usuarios->nombre }}"
                                     class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-none">
                             </div>
                         </div>
 
                         <div class="sm:col-span-3">
-                            <label for="apellido" class="block text-sm font-medium leading-6 text-gray-900">Apellidos
+                            <label class="block text-sm font-medium leading-6 text-gray-900">Apellidos
                                 completos</label>
                             <div class="mt-2">
-                                <input type="text" name="apellido" id="apellido" value="{{ $usuarios->apellido }}"
+                                <input type="text" name="apellido" value="{{ $usuarios->apellido }}"
                                     class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 outline-none">
                             </div>
                         </div>
 
                         <div class="sm:col-span-3">
-                            <label for="numero_documento" class="block text-sm font-medium leading-6 text-gray-900">Número
+                            <label class="block text-sm font-medium leading-6 text-gray-900">Número
                                 de
                                 documento</label>
                             <div class="mt-2">
-                                <input type="text" name="numero_documento" id="numero_documento"
+                                <input type="text" name="numero_documento" 
                                     value="{{ $usuarios->numero_documento }}"
                                     class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
                             </div>
                         </div>
 
                         <div class="sm:col-span-3">
-                            <label for="genero" class="block text-sm font-medium leading-6 text-gray-900">Género</label>
+                            <label class="block text-sm font-medium leading-6 text-gray-900">Género</label>
                             <div class="mt-2">
-                                <select name="genero" id="genero" value="{{ $usuarios->genero }}"
+                                <select name="genero" value="{{ $usuarios->genero }}"
                                     class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
                                     <option value="masculino">MASCULINO</option>
                                     <option value="femenino">FEMENINO</option>
@@ -53,28 +53,28 @@
                         </div>
 
                         <div class="sm:col-span-3">
-                            <label for="telefono" class="block text-sm font-medium leading-6 text-gray-900">Número
+                            <label class="block text-sm font-medium leading-6 text-gray-900">Número
                                 telefonico</label>
                             <div class="mt-2">
-                                <input type="text" name="telefono" id="telefono" value="{{ $usuarios->telefono }}"
+                                <input type="text" name="telefono" value="{{ $usuarios->telefono }}"
                                     class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
                             </div>
                         </div>
 
                         <div class="sm:col-span-3">
-                            <label for="correo" class="block text-sm font-medium leading-6 text-gray-900">Correo
+                            <label class="block text-sm font-medium leading-6 text-gray-900">Correo
                                 electrónico</label>
                             <div class="mt-2">
-                                <input type="email" name="email" id="correo" value="{{ $usuarios->email }}"
+                                <input type="email" name="email" value="{{ $usuarios->email }}"
                                     class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
                             </div>
                         </div>
 
                         <div class="sm:col-span-3">
-                            <label for="dependencia"
+                            <label 
                                 class="block text-sm font-medium leading-6 text-gray-900">Dependencia</label>
                             <div class="mt-2">
-                                <select name="dependencia" id="dependencia" value="{{$usuarios->dependencia}}"
+                                <select name="dependencia" value="{{$usuarios->dependencia}}"
                                     class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
                                     <option value="defecto">SELECCIONE UNA OPCION</option>
                                     <option value="despacho alcaldia">DESPACHO ALCALDE</option>
@@ -99,7 +99,7 @@
                         </div>
 
                         <div class="sm:col-span-3 mt-8 block">
-                            <label for="tipo_funcionario" class=" text-sm font-medium leading-6 text-gray-900">Tipo de
+                            <label class=" text-sm font-medium leading-6 text-gray-900">Tipo de
                                 funcionario</label>
 
                             <input type="radio" name="tipo_funcionario" id="planta" value="planta" class="ml-10">
@@ -111,9 +111,9 @@
                         </div>
 
                         <div class="sm:col-span-3">
-                            <label for="cargo" class="block text-sm font-medium leading-6 text-gray-900">Cargo</label>
+                            <label class="block text-sm font-medium leading-6 text-gray-900">Cargo</label>
                             <div class="mt-2">
-                                <select name="cargo" id="cargo"
+                                <select name="cargo" 
                                     class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
                                     <option value="defecto">SELECCIONE UNA OPCION</option>
                                     <option value="alcalde">ALCALDE</option>
@@ -154,7 +154,7 @@
                         </div>
 
                         <div class="sm:col-span-3 mt-8 block">
-                            <label for="rol" class=" text-sm font-medium leading-6 text-gray-900">Rol</label>
+                            <label class=" text-sm font-medium leading-6 text-gray-900">Rol</label>
 
                             <input type="radio" name="rol" id="creador" value="creador" class="ml-36">
                             <label for="planta" class="mr-16">CREADOR</label>
@@ -164,19 +164,19 @@
                         </div>
 
                         <div class="sm:col-span-3">
-                            <label for="password"
+                            <label 
                                 class="block text-sm font-medium leading-6 text-gray-900">Contraseña</label>
                                 <div class="text-xs text-red-400">
                                     @error('password')  {{$message}}   @enderror
                                 </div>
                             <div class="mt-2">
-                                <input type="password" name="password" id="password"
+                                <input type="password" name="password"
                                     class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
                             </div>
                         </div>
 
                         <div class="col-span-full">
-                            <label for="cover-photo" class="block text-sm font-medium leading-6 text-gray-900">Foto de
+                            <label class="block text-sm font-medium leading-6 text-gray-900">Foto de
                                 perfil</label>
                             <div
                                 class="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-2">

@@ -14,17 +14,16 @@ Route::controller(InicioSesionController::class)->group(function () {
 });
 
 
-// RUTAS PARA EL CREADOR
-Route::group(['middleware' => 'auth'], function () {
-    Route::get('/pagina-inicio', [PaginaController::class, 'index'])->name("pagina-inicio");
-    Route::get('/pagina-configuracion', [PaginaController::class, 'show'])->name("pagina-configuracion");
+Route::middleware('auth')->group(function () {
+    // RUTAS DE INICIO
+    Route::controller(PaginaController::class)->group(function () {
+        Route::get('/pagina-inicio', 'index')->name("pagina-inicio");
+        Route::get('/pagina-configuracion', 'show')->name("pagina-configuracion");
+    });
 });
 
-
-// RUTAS PARA EL ADMINISTRADOR
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
-    //Ruta agrupada de configuración de usuarios
-    Route::resource('usuarios', UsuariosController::class) -> names('usuarios');
-    // Ruta para acceder a ruta de editar usuario
-    Route::put('usuarios/{id}/edit', [UsuariosController::class, 'edit'])->name("editar_usuarios");
+Route::middleware(['auth', 'can:usuarios'])->group(function () {
+    // RUTAS DE CONFIGURACION DE USUARIOS
+    Route::resource("usuarios", UsuariosController::class)->names("usuarios");
+    Route::put('usuarios/{id}/edit', [UsuariosController::class, 'edit'])->name("usuarios.edit");
 });

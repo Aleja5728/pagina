@@ -9,11 +9,14 @@ use Illuminate\Support\Facades\DB;
 
 class UsuariosController extends Controller
 {
+    
     public function index(Request $request)
     {
         $buscar_usuario = $request -> get('buscar_usuario');
 
-        $usuarios = DB::table('usuarios')-> where('nombre', 'like', '%'.$buscar_usuario.'%')-> Paginate(7) ;
+        $usuarios = User::where('nombre', 'like', '%'. $buscar_usuario . '%')
+                    -> orWhere('numero_documento', 'like', '%' . $buscar_usuario . '%')
+                    -> Paginate(7) ;
                     
         return view("configuracion_usuarios.configuracion_usuarios", compact('usuarios', 'buscar_usuario'));
     }
@@ -125,7 +128,8 @@ class UsuariosController extends Controller
 
         $usuarios->save();
 
-        return redirect() -> route('configuracion-usuarios');
+
+        return redirect() -> route('usuarios.index');
     }
 
     /**

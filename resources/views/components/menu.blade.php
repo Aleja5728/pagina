@@ -61,7 +61,7 @@
                     <label for="nombre" class="block text-sm font-medium leading-6 text-gray-900">Nombres
                         completos</label>
                     <div class="mt-2">
-                        <input type="text" name="nombre" value="{{ auth()->user()->nombre }}" id="nombre" disabled
+                        <input type="text" name="nombre" value="{{ auth()->user()->nombre ?? " " }}" id="nombre" disabled
                             class="nombre block w-full rounded-md border-[1px] p-1.5 text-gray-900 shadow-sm border-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none">
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                     <label for="apellido" class="block text-sm font-medium leading-6 text-gray-900">Apellidos
                         completos</label>
                     <div class="mt-2">
-                        <input type="text" name="apellido" id="apellido" value="{{ auth()->user()->apellido }}" disabled
+                        <input type="text" name="apellido" id="apellido" value="{{ auth()->user()->apellido ?? " " }}" disabled
                             class="apellido block w-full rounded-md border-[1px] p-1.5 text-gray-900 shadow-sm border-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none">
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                     <label for="numero_documento" class="block text-sm font-medium leading-6 text-gray-900">Número de
                         documento</label>
                     <div class="mt-2">
-                        <input type="number" name="numero_documento" value="{{ auth()->user()->numero_documento }}" id="numero_documento" disabled
+                        <input type="number" name="numero_documento" value="{{ auth()->user()->numero_documento ?? " " }}" id="numero_documento" disabled
                             class="numero_documento block w-full rounded-md border-[1px] p-1.5 text-gray-900 shadow-sm border-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none">
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                     <label for="dependencia"
                         class="block text-sm font-medium leading-6 text-gray-900">Dependencia</label>
                     <div class="mt-2">
-                        <input type="text" name="dependencia" value="{{ auth()->user()->dependencia }}" id="dependencia" disabled
+                        <input type="text" name="dependencia" value="{{ auth()->user()->dependencia ?? " " }}" id="dependencia" disabled
                             autocomplete="given-name"
                             class="block w-full rounded-md border-[1px] p-1.5 text-gray-900 shadow-sm border-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none">
                     </div>
@@ -93,7 +93,7 @@
                 <div class="sm:col-span-3">
                     <label for="telefono" class="block text-sm font-medium leading-6 text-gray-900">Telefono</label>
                     <div class="mt-2">
-                        <input type="text" name="telefono" value="{{ auth()->user()->telefono }}" id="telefono" disabled
+                        <input type="text" name="telefono" value="{{ auth()->user()->telefono ?? " " }}" id="telefono" disabled
                             autocomplete="given-name"
                             class="telefono block w-full rounded-md border-[1px] p-1.5 text-gray-900 shadow-sm border-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none">
                     </div>
@@ -102,7 +102,7 @@
                     <label for="correo" class="block text-sm font-medium leading-6 text-gray-900">Correo
                         electrónico</label>
                     <div class="mt-2">
-                        <input type="text" name="email" value="{{ auth()->user()->email }}" id="correo" disabled
+                        <input type="text" name="email" value="{{ auth()->user()->email ?? " " }}" id="correo" disabled
                             autocomplete="given-name"
                             class="correo block w-full rounded-md border-[1px] p-1.5 text-gray-900 shadow-sm border-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none">
                     </div>
