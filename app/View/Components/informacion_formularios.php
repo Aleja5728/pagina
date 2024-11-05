@@ -21,6 +21,6 @@ class informacion_formularios extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.informacion_formularios');
+        return view('Components.FormDetails');
     }
 }

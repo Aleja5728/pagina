@@ -21,8 +21,8 @@ return new class extends Migration
             $table -> string("email") -> unique();
             $table -> string("dependencia");
             $table -> string("tipo_funcionario");
-            $table -> string("cargo");
             $table -> string("rol");
+            $table -> string("cargo");
             $table -> string("foto_perfil");
             $table -> string("password");
             $table->timestamps();

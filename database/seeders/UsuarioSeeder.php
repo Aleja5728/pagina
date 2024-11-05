@@ -13,20 +13,22 @@ class UsuarioSeeder extends Seeder
      */
     public function run(): void
     {
+
+        User::truncate();
         User::create([
             'nombre' => 'Gabriela',
             'apellido' => 'Rodríguez',
             'numero_documento' => '100351245',
             'genero' => 'femenino',
             'telefono' => '3018451243',
-            'email' => 'gabirodriguez@hotmail.com',
-            'dependencia' => 'despacho alcaldia',
+            'email' => 'gabirodriguez24@hotmail.com',
+            'dependencia' => 'secretaria de educacion',
             'tipo_funcionario' => 'contratista',
-            'cargo' => 'pasante',
             'rol' => 'Administrador',
+            'cargo' => 'pasante',
             'foto_perfil' => '',
-            'password' => bcrypt('clave') 
-        ]) -> assignRole('Administrador');
+            'password' => bcrypt('clave')
+        ])->assignRole('Administrador');
 
         User::create([
             'nombre' => 'Luis',
@@ -37,10 +39,10 @@ class UsuarioSeeder extends Seeder
             'email' => 'LuisRome@hotmail.com',
             'dependencia' => 'despacho alcaldia',
             'tipo_funcionario' => 'planta',
-            'cargo' => 'pasante',
             'rol' => 'Creador',
+            'cargo' => 'pasante',
             'foto_perfil' => '',
-            'password' => bcrypt('ejemplo')  
-        ]) -> assignRole('Creador');
+            'password' => bcrypt('ejemplo')
+        ])->assignRole('Creador');
     }
 }
