@@ -22,7 +22,7 @@ class UsuarioSeeder extends Seeder
             'genero' => 'femenino',
             'telefono' => '3018451243',
             'email' => 'gabirodriguez24@hotmail.com',
-            'dependencia' => 'secretaria de educacion',
+            'dependencia' => 'secretaria de salud',
             'tipo_funcionario' => 'contratista',
             'rol' => 'Administrador',
             'cargo' => 'pasante',

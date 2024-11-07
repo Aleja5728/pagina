@@ -3,6 +3,7 @@
 @section('titulo', 'plantilla')
 
 @section('cabecera')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <style>
     body {
         background-color: #eeeeee;
@@ -39,9 +40,10 @@
                     </div>
 
                     <div class="contenedor flex flex-col gap-y-6 pt-6" id="formulario">
+                        <!-- Llamar a las preguntas desde la base de datos según el tipo de input definido -->
                         @foreach ($preguntas as $pregunta)
                         <div class="form-group">
-                            <label>{{ $pregunta->texto_de_pregunta}}</label>
+                            <label class="uppercase">{{ $pregunta->texto_de_pregunta}}</label>
 
                             @switch($pregunta->tipo_de_pregunta)
 
@@ -293,6 +295,7 @@
     }
 </script>
 
+<!-- Script para drag and drop -->
 <script>
     // Definición de variables
     const zonaDrop = document.getElementById('zonaDrop')
@@ -354,92 +357,142 @@
         e.preventDefault();
     });
 
+    // Función para agregar campo visualmente
     function agregarCampo(type) {
         const espacioNuevo = document.getElementById('espacioNuevoCampo');
         const newField = document.createElement('div');
+        let textoPregunta = prompt("Ingresa el texto de la pregunta");
         newField.classList.add('nuevoCampo');
 
-        if (type === 'textarea') {
-            newField.innerHTML = `
-                 <div class="field-input mt-3">
-                    <label> 
-                        <textarea name="descripcionFormulario" class="border-none p-0 w-full h-6 text-sm uppercase focus:ring-0 resize-none overflow-hidden" placeholder="Ingresa la pregunta"></textarea>
-                        <textarea class="w-full m-0"></textarea>
-                    </label>
-                </div>
-                 <button type="button" onclick="removeField(this)">Eliminar</button>
-                `;
-        } else if (type === 'text') {
-            newField.innerHTML = `
-                 <div class="field-input mt-3">
-                    <label> 
-                        <textarea name="descripcionFormulario" class="border-none p-0 w-full h-6 text-sm uppercase focus:ring-0 resize-none overflow-hidden" placeholder="Ingresa la pregunta"></textarea>
-                        <input type="text" class="w-full">
-                    </label>
-                </div>
-                 <button type="button" onclick="removeField(this)">Eliminar</button>
-                `;
-        } else if (type === 'select') {
-            let numeroDeOpciones = prompt("¿Cuantas opciones desea agregar?");
-            if (numeroDeOpciones !== null && numeroDeOpciones !== '') {
-                var valorSelect;
-                var valores = [];
-                let opcionesInner = "";
-                for (let i = 0; i < numeroDeOpciones; i++) {
-                    valorSelect = prompt("Digite la opción");
-                    valores.push(valorSelect);
-                }
-
-                valores.forEach(function(valor) {
-                    opcionesInner += `<option> ${valor} </option>`
-                })
-
+        if (textoPregunta !== null && textoPregunta !== '') {
+            if (type === 'textarea') {
                 newField.innerHTML = `
-                 <div class="field-input mt-3">
-                    <label> 
-                        <textarea name="descripcionFormulario" class="border-none p-0 w-full h-6 text-sm uppercase focus:ring-0 resize-none overflow-hidden" placeholder="Ingresa la pregunta"></textarea>
-                        <select class="w-full">
-                            <option value="defecto">Seleccione una opción</option>
-                            ${opcionesInner}
-                        </select>
-                    </label>
-                </div>
-                 <button type="button" onclick="removeField(this)">Eliminar</button>
-                `;
+                    <div class="field-input mt-3">
+                        <label class="uppercase"> 
+                            ${textoPregunta}   
+                        <textarea class="w-full m-0"></textarea>
+                        </label>
+                    </div>
+                    <button type="button" onclick="removeField(this)">Eliminar</button>
+                    <button type="button" onclick="guardarPregunta('${textoPregunta}','${type}')">Guardar</button>
+                    `;
+            } else if (type === 'text') {
+                newField.innerHTML = `
+                    <div class="field-input mt-3">
+                        <label class="uppercase"> 
+                            ${textoPregunta}
+                            <input type="text" class="w-full">
+                        </label>
+                    </div>
+                    <button type="button" onclick="removeField(this)">Eliminar</button>
+                    <button type="button" onclick="guardarPregunta('${textoPregunta}','${type}')">Guardar</button>
+                    `;
+            } else if (type === 'select') {
+                let numeroDeOpciones = prompt("¿Cuantas opciones desea agregar?");
+                if (numeroDeOpciones !== null && numeroDeOpciones !== '') {
+                    var valorSelect;
+                    var valores = [];
+                    let opcionesInner = "";
+                    for (let i = 0; i < numeroDeOpciones; i++) {
+                        valorSelect = prompt("Digite la opción");
+                        valores.push(valorSelect);
+                    }
+
+                    valores.forEach(function(valor) {
+                        opcionesInner += `<option> ${valor} </option>`
+                    })
+
+                    newField.innerHTML = `
+                    <div class="field-input mt-3">
+                        <label class="uppercase"> 
+                            ${textoPregunta}
+                            <select class="w-full">
+                                <option value="defecto" >Seleccione una opción</option>
+                                ${opcionesInner}
+                            </select>
+                        </label>
+                    </div>
+                    <button type="button" onclick="removeField(this)">Eliminar</button>
+                    `;
+                    // Crear el botón Guardar programáticamente
+                    const botonGuardar = document.createElement('button');
+                    botonGuardar.type = "button";
+                    botonGuardar.innerText = "Guardar";
+                    botonGuardar.addEventListener('click', function() {
+                        guardarPregunta(textoPregunta, type, valores);
+                    });
+
+                    // Añadir el botón Guardar al newField
+                    newField.appendChild(botonGuardar);
+                }
+            } else if (type === 'number') {
+                newField.innerHTML = `
+                    <div class="field-input mt-3">
+                        <label class="uppercase"> 
+                            ${textoPregunta}
+                            <input type="number" class="w-full">
+                        </label>
+                    </div>
+                    <button type="button" onclick="removeField(this)">Eliminar</button>
+                    <button type="button" onclick="guardarPregunta('${textoPregunta}','${type}')">Guardar</button>
+                    `;
+            } else if (type === 'date') {
+                newField.innerHTML = `
+                    <div class="field-input mt-3">
+                        <label class="uppercase"> 
+                            ${textoPregunta}
+                            <input type="date" class="w-full">
+                        </label>
+                    </div>
+                    <button type="button" onclick="removeField(this)">Eliminar</button>
+                    <button type="button" onclick="guardarPregunta('${textoPregunta}','${type}')">Guardar</button>
+                    `;
+            } else if (type === 'image') {
+                newField.innerHTML = `
+                    <div class="field-input mt-3">
+                        <label class="uppercase"> 
+                            ${textoPregunta}
+                            <input type="file" class="w-full">
+                        </label>
+                    </div>
+                    <button type="button" onclick="removeField(this)">Eliminar</button>
+                    <button type="button" onclick="guardarPregunta('${textoPregunta}','${type}')">Guardar</button>
+                    `;
             }
-        } else if (type === 'number') {
-            newField.innerHTML = `
-                 <div class="field-input mt-3">
-                    <label> 
-                        <textarea name="descripcionFormulario" class="border-none p-0 w-full h-6 text-sm uppercase focus:ring-0 resize-none overflow-hidden" placeholder="Ingresa la pregunta"></textarea>
-                        <input type="number" class="w-full">
-                    </label>
-                </div>
-                 <button type="button" onclick="removeField(this)">Eliminar</button>
-                `;
-        } else if (type === 'date') {
-            newField.innerHTML = `
-                 <div class="field-input mt-3">
-                    <label> 
-                        <textarea name="descripcionFormulario" class="border-none p-0 w-full h-6 text-sm uppercase focus:ring-0 resize-none overflow-hidden" placeholder="Ingresa la pregunta"></textarea>
-                        <input type="date" class="w-full">
-                    </label>
-                </div>
-                 <button type="button" onclick="removeField(this)">Eliminar</button>
-                `;
-        } else if (type === 'image') {
-            newField.innerHTML = `
-                 <div class="field-input mt-3">
-                    <label> 
-                        <textarea name="descripcionFormulario" class="border-none p-0 w-full h-6 text-sm uppercase focus:ring-0 resize-none overflow-hidden" placeholder="Ingresa la pregunta"></textarea>
-                        <input type="file" class="w-full">
-                    </label>
-                </div>
-                 <button type="button" onclick="removeField(this)">Eliminar</button>
-                `;
+            espacioNuevo.appendChild(newField);
         }
-        espacioNuevo.appendChild(newField);
     }
+
+    // Función para agregar campo creado a la base de datos
+    async function guardarPregunta(textoPregunta, tipo, opciones) {
+        const preguntaData = {
+            texto_de_pregunta: textoPregunta,
+            tipo_de_pregunta: tipo,
+            opcion: opciones,
+        };
+
+        try {
+            const response = await fetch('{{ route("template.guardar") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify(preguntaData)
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                alert('Pregunta guardada exitosamente en la base de datos');
+            } else {
+                alert('Hubo un error al guardar la pregunta');
+                console.error('Error en la respuesta:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error en la solicitud:', error);
+        }
+    }
+
 
     function removeField(button) {
         button.parentElement.remove();
