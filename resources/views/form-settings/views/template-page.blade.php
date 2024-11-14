@@ -31,20 +31,26 @@
         <div class="z-10 w-4/5 h-48 bg-fixed absolute right-0"> <!--Color de fondo-->
 
             <div class="m-auto static w-full h-auto">
-                <form action="#" method="post" class=" p-2 pb-10 bg-white w-[95%] h-auto m-auto relative top-10 text-sm " ondrop="" enctype="multipart/form-data">
+                <form action="{{ route('template.crearFormulario') }}" method="post" class=" p-2 pb-10 bg-white w-[95%] h-auto m-auto relative top-10 text-sm " ondrop="" enctype="multipart/form-data">
                     @csrf
 
                     <div class="flex flex-col place-items-center ">
-                        <textarea name="tituloFormulario" id="hs-default-height-with-autoheight-script" class="border-none p-0 pt-2 uppercase w-full text-center font-bold focus:ring-0 resize-none overflow-hidden"> Titulo del formulario </textarea>
-                        <textarea name="descripcionFormulario" id="hs-default-height-with-autoheight-script2" class="border-none p-0 pb-4 w-full text-sm focus:ring-0 resize-none overflow-hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate quae illo nam, rerum maxime porro dolores magnam cumque ex magni natus voluptatum dolore veritatis ad dignissimos obcaecati facere delectus sapiente?</textarea>
+                        <textarea name="titulo" id="hs-default-height-with-autoheight-script" class="border-none p-0 pt-2 uppercase w-full text-center font-bold focus:ring-0 resize-none overflow-hidden"> Titulo del formulario </textarea>
+                        <textarea name="descripcion" id="hs-default-height-with-autoheight-script2" class="border-none p-0 pb-4 w-full text-sm focus:ring-0 resize-none overflow-hidden">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate quae illo nam, rerum maxime porro dolores magnam cumque ex magni natus voluptatum dolore veritatis ad dignissimos obcaecati facere delectus sapiente?</textarea>
                     </div>
 
                     <div class="contenedor flex flex-col gap-y-6 pt-6" id="formulario">
                         <!-- Llamar a las preguntas desde la base de datos según el tipo de input definido -->
                         @foreach ($preguntas as $pregunta)
                         <div class="form-group">
-                            <label class="uppercase">{{ $pregunta->texto_de_pregunta}}</label>
+                            <!-- Cambia el checkbox según el estado de la preguna, si está visible o no -->
+                            <label class="uppercase">
+                                {{ $pregunta->texto_de_pregunta}}
+                                <input type="checkbox" name="preguntas[]" class="absolute right-5" value="{{ $pregunta->id }}"
+                                    @if($pregunta->visible) checked @endif>
+                            </label>
 
+                            <!-- Llama a las preguntas dependiendo el tipo de pregunta que se haya definido en su creación -->
                             @switch($pregunta->tipo_de_pregunta)
 
                             @case('text')
@@ -60,7 +66,7 @@
                                 <option value="defecto">Seleccione una opción</option>
                                 @foreach ($selects as $select)
                                 @if ($select->id_question == $pregunta->id)
-                                <option value="{{ $select -> opcion }}">{{ $select -> opcion }}</option>
+                                <option value="{{ $select -> texto_selects }}">{{ $select -> texto_selects }}</option>
                                 @endif
                                 @endforeach
                             </select>
@@ -86,7 +92,7 @@
                             <br>
                             @foreach ($selects as $select)
                             @if ($select->id_question == $pregunta->id)
-                            <br><input type="checkbox" name="{{ $select -> opcion }}" id=""> {{ $select -> opcion }}
+                            <br><input type="checkbox" name="{{ $select -> texto_selects }}" id=""> {{ $select -> texto_selects }}
                             @endif
                             @endforeach
                             @break
@@ -94,12 +100,45 @@
 
                             @default
                             @endswitch
+
+
+                            <!-- Mostrar las preguntas dependientes -->
+                            @foreach ($pregunta->dependents as $dependencia)
+                            <div class="form-group dependiente" id="dependiente-{{ $pregunta->id }}-{{ $dependencia->condition }}" style="display: none;">
+                                <label>{{ $dependencia->dependentQuestion->texto_de_pregunta }}</label>
+
+                                @switch($dependencia->dependentQuestion->tipo_de_pregunta)
+                                @case('select')
+                                <select name="preguntas[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                    <option value="defecto">Seleccione una opción</option>
+                                    @foreach ($dependencia->dependentQuestion->selects as $select)
+                                    <option value="{{ $select->texto_selects }}">{{ $select->texto_selects }}</option>
+                                    @endforeach
+                                </select>
+                                @break
+
+                                @case('text')
+                                <input type="text" name="preguntas[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                @break
+
+                                @case('checkbox')
+                                @foreach ($dependencia->dependentQuestion->selects as $select)
+                                <input type="checkbox" name="preguntas[{{ $dependencia->dependentQuestion->id }}][]" value="{{ $select->texto_selects }}">
+                                {{ $select->texto_selects }}
+                                @endforeach
+                                @break
+
+                                @default
+                                <!-- Otro tipo de campos -->
+                                @endswitch
+                            </div>
+                            @endforeach
+
                         </div>
+
                         @endforeach
 
                         @if(auth()->user()->dependencia == 'secretaria de educacion')
-
-                        @else
 
                         @endif
 
@@ -468,11 +507,11 @@
         const preguntaData = {
             texto_de_pregunta: textoPregunta,
             tipo_de_pregunta: tipo,
-            opcion: opciones,
+            texto_selects: opciones,
         };
 
         try {
-            const response = await fetch('{{ route("template.guardar") }}', {
+            const response = await fetch('{{ route("template.guardarPreguntas") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -13,4 +13,10 @@ class SelectsModel extends Model
 
     protected $fillable = ['id_question', 'opcion'];
 
+    // Relación con Pregunta
+    public function pregunta()
+    {
+        return $this->belongsTo(Questions::class, 'id_question');
+    }
+
 }

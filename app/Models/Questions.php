@@ -14,5 +14,30 @@ class Questions extends Model
                             'tipo_de_pregunta', 
                             'visible'];
 
+                            // Relación con Sección
+    public function seccion()
+    {
+        return $this->belongsTo(Section::class, 'id_section');
+    }
+
+    // Relación many-to-many con Formulario
+    public function formularios()
+    {
+        return $this->belongsToMany(FormModel::class, 'questionsforms', 'id_question', 'id_form');
+    }
+
+    // Relación con PreguntaDependiente
+    public function dependencias()
+    {
+        return $this->hasMany(SelectsModel::class, 'id_question');
+    }
+
+    // Este método recuperará todas las preguntas dependientes que están asociadas a una pregunta principal.
+    public function dependents() {
+        return $this->hasMany(DependentQuestion::class, 'id_mainquestion');
+    }
+
+
     use HasFactory;
+    
 }

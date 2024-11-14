@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('forms', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo'); // Título del formulario
-            $table->string('descripcion'); // Descripcion del formulario
+            $table->string('titulo')->nullable(); // Título del formulario
+            $table->string('descripcion')->nullable(); // Descripcion del formulario
             $table->timestamps();
         });
     }

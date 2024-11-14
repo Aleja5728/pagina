@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('sections', function (Blueprint $table) {
             $table->id(); // Identificador de la sección
-            // $table->unsignedBigInteger('id_form');
-            // $table->foreign('id_form')->references('id')->on('forms');
-            $table->string('nombre_seccion'); // Nombre de la sección
+            $table->unsignedBigInteger('id_form')->nullable();
+            $table->foreign('id_form')->references('id')->on('forms');
+            $table->string('nombre_seccion')->nullable(); // Nombre de la sección
             $table->timestamps();
         });
     }

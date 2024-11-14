@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_question');
             $table->foreign('id_question')->references('id')->on('questions');
-            $table->string('opcion'); 
+            $table->string('texto_selects'); 
             $table->timestamps();
         });
     }

@@ -34,5 +34,7 @@ Route::middleware(['auth', 'can:usuarios'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('template', TemplateController::class)->names('template');
-    Route::post('template', [TemplateController::class, 'guardar'])->name("template.guardar");
+    // Se llama esta ruta en la función de crear nuevo campo en la vista de la plantilla
+    Route::post('template/store', [TemplateController::class, 'guardarPreguntas'])->name("template.guardarPreguntas");
+    Route::post('template', [TemplateController::class, 'crearFormulario'])->name("template.crearFormulario");
 });

@@ -336,7 +336,7 @@ class QuestionSeeder extends Seeder
             ['id_section' => 16, 'texto_de_pregunta' => '¿QUÉ ES LO QUE MÁS LE LLAMO LA ATENCIÓN DE FUSAGASUGÁ?', 'tipo_de_pregunta' => 'text', 'visible' => true],
             ['id_section' => 16, 'texto_de_pregunta' => 'EN DONDE SE ESTÁ HOSPEDANDO', 'tipo_de_pregunta' => 'select', 'visible' => true],
             ['id_section' => 16, 'texto_de_pregunta' => '¿CUANTOS DÍAS PLANEA QUEDARSE EN EL MUNICIPIO?', 'tipo_de_pregunta' => 'text', 'visible' => true],
-            ['id_section' => 16, 'texto_de_pregunta' => '¿CON CUANTAS PERSONAS ESTA VISITANDO EL MUNICIPIO?', 'tipo_de_pregunta' => 'text', 'visible' => true],
+            ['id_section' => 16, 'texto_de_pregunta' => '¿CON CUANTAS PERSONAS ESTA VISITANDO EL MUNICIPIO?', 'tipo_de_pregunta' => 'text', 'visible' => false],
         ]);
     }
 }

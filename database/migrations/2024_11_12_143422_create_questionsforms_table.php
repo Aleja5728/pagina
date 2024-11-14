@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
-            $table->id(); // Identificador de la pregunta
-            // // Referencia a tabla section
+        Schema::create('questionsforms', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('id_form')->nullable();
+            $table->foreign('id_form')->references('id')->on('forms');
+            $table->unsignedBigInteger('id_question');
+            $table->foreign('id_question')->references('id')->on('questions');
             $table->unsignedBigInteger('id_section');
             $table->foreign('id_section')->references('id')->on('sections');
-            $table->string('texto_de_pregunta'); // Texto que contiene la pregunta
-            $table->string('tipo_de_pregunta');
-            $table->boolean('visible')->default(false); // Indica si la pregunta esta activa
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('questionsforms');
     }
 };
