@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DependentQuestion;
 use App\Models\Questions;
 use App\Models\SelectsModel;
 use App\Models\FormModel;
@@ -11,13 +12,33 @@ use Illuminate\Support\Facades\Auth;
 
 class TemplateController extends Controller
 {
+    // Función para llamar a la página de la plantilla
     public function index()
     {
-        // Muestra las preguntas del formulario
-        $preguntas = Questions::all();
+        // Llama los registros de la tabla Questions con las preguntas principales juntos con las dependientes 
+        $preguntas = Questions::with('dependents.dependentQuestion')->get();
+
+        // Llama los registros de la tabla Selects
         $selects = DB::table('selects')->get();
 
-        return view('form-settings.views.template-page', compact('preguntas', 'selects'));
+        // Encuentra los id de las preguntas dependientes
+        // Con la función flatMap se recorren todas las preguntas y se extrae el id de las preguntas dependientes con Pluck, se genera una lista única de id
+        $dependientesIds = $preguntas->flatMap(function ($pregunta) {
+            return $pregunta->dependents->pluck('id_dependentquestion');
+        });
+
+        // Se excluyen todas las preguntas cuyo id este en la lista de id dependientes 
+        $preguntasPrincipales = $preguntas->reject(function ($pregunta) use ($dependientesIds) {
+            return $dependientesIds->contains($pregunta->id);
+        });
+
+        // Se seleccionan unicamente las preguntas que son dependientes 
+        $preguntasDependientes = $preguntas->filter(function ($pregunta) use ($dependientesIds) {
+            return $dependientesIds->contains($pregunta->id);
+        });
+
+        // Se envían las preguntas principales, dependientes y los select a la vista
+        return view('form-settings.views.template-page', compact('preguntasPrincipales', 'preguntasDependientes', 'selects'));
     }
 
     // Función para guardar nuevas preguntas en la base de datos
@@ -82,32 +103,44 @@ class TemplateController extends Controller
         ], 201);
     }
 
+    // Función para crear formulario dependiendo los cambios realizados en la plantilla
     public function crearFormulario(Request $request)
     {
+
         // Crear el nuevo formulario
         $formulario = new FormModel();
         $formulario->titulo = $request->input('titulo');
         $formulario->descripcion = $request->input('descripcion');
         $formulario->save();
 
-        // Asociar las preguntas seleccionadas con el formulario
-        if ($request->has('preguntas')) {
-            foreach ($request->input('preguntas') as $preguntaId) {
-                $pregunta = Questions::find($preguntaId);
+       // Asociar preguntas seleccionadas al formulario con id_section
+    if ($request->has('preguntas')) {
+        foreach ($request->input('preguntas') as $preguntaId) {
+            // Obtener la pregunta
+            $pregunta = Questions::find($preguntaId);
 
-                // Aquí puedes guardar la relación entre el formulario y las preguntas, por ejemplo:
-                $formulario->preguntas()->attach($preguntaId);
+            // Si la pregunta tiene sección, asociarla con el formulario
+            if ($pregunta) {
+                $idSection = $pregunta->id_section;
+                // Asociar la pregunta al formulario incluyendo el id_section
+                $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
+            }
+        }
+    }
+        // Si se añaden preguntas nuevas
+        if ($request->has('nuevas_preguntas')) {
+            foreach ($request->input('nuevas_preguntas') as $nuevaPregunta) {
+                $pregunta = Questions::create([
+                    'texto_de_pregunta' => $nuevaPregunta['texto_de_pregunta'],
+                    'tipo_de_pregunta' => $nuevaPregunta['tipo_de_pregunta'],
+                    'visible' => $nuevaPregunta['visible'] ?? true,
+                ]);
 
-                // Si la pregunta tiene dependencias, guardarlas también
-                if ($pregunta->preguntaDependiente) {
-                    $dependencia = new SelectsModel();
-                    $dependencia->id_question = $preguntaId;
-                    $dependencia->opcion_condicional = $pregunta->preguntaDependiente->opcion_condicional;
-                    $dependencia->save();
-                }
+                $formulario->preguntas()->attach($pregunta->id);
+                
             }
         }
 
-        return redirect()->route('form-settings.template-page')->with('success', 'Formulario creado exitosamente.');
+        return redirect()->route('template.index')->with('success', 'Formulario creado exitosamente.');
     }
 }

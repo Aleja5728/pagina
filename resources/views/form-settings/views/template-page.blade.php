@@ -41,9 +41,9 @@
 
                     <div class="contenedor flex flex-col gap-y-6 pt-6" id="formulario">
                         <!-- Llamar a las preguntas desde la base de datos según el tipo de input definido -->
-                        @foreach ($preguntas as $pregunta)
+                        @foreach ($preguntasPrincipales as $pregunta)
                         <div class="form-group">
-                            <!-- Cambia el checkbox según el estado de la preguna, si está visible o no -->
+                            <!-- Cambia el checkbox según el estado de la pregunta, si está visible o no -->
                             <label class="uppercase">
                                 {{ $pregunta->texto_de_pregunta}}
                                 <input type="checkbox" name="preguntas[]" class="absolute right-5" value="{{ $pregunta->id }}"
@@ -62,8 +62,8 @@
                             @break
 
                             @case('select')
-                            <select name="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
-                                <option value="defecto">Seleccione una opción</option>
+                            <select name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full pregunta-principal" data-question-id="{{ $pregunta->id }}">
+                                <option value="0">Seleccione una opción</option>
                                 @foreach ($selects as $select)
                                 @if ($select->id_question == $pregunta->id)
                                 <option value="{{ $select -> texto_selects }}">{{ $select -> texto_selects }}</option>
@@ -101,35 +101,50 @@
                             @default
                             @endswitch
 
-
-                            <!-- Mostrar las preguntas dependientes -->
+                            <!-- Preguntas dependientes -->
                             @foreach ($pregunta->dependents as $dependencia)
-                            <div class="form-group dependiente" id="dependiente-{{ $pregunta->id }}-{{ $dependencia->condition }}" style="display: none;">
+                            <div class="form-group dependent-question pt-6"
+                                id="dependent-{{ $dependencia->dependentQuestion->id }}"
+                                style="display: none;"
+                                data-main-question="{{ $pregunta->id }}"
+                                data-condition="{{ $dependencia->condition }}">
                                 <label>{{ $dependencia->dependentQuestion->texto_de_pregunta }}</label>
-
                                 @switch($dependencia->dependentQuestion->tipo_de_pregunta)
+
+                                @case('text')
+                                <input type="text" name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                @break
+
+                                @case('number')
+                                <input type="text" name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                @break
+
+                                @case('date')
+                                <input type="date" name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                @break
+
+                                @case('time')
+                                <input type="time" name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                @break
+
+                                @case('email')
+                                <input type="email" name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                @break
+
+                                @case('textarea')
+                                <textarea name="respuesta[{{ $dependencia->dependentQuestion->id }}]" id="" class="w-full"></textarea>
+                                @break
+
                                 @case('select')
-                                <select name="preguntas[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
-                                    <option value="defecto">Seleccione una opción</option>
-                                    @foreach ($dependencia->dependentQuestion->selects as $select)
+                                <select name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                    <option value="0">Seleccione una opción</option>
+                                    @foreach ($selects as $select)
+                                    @if ($select->id_question == $dependencia->dependentQuestion->id)
                                     <option value="{{ $select->texto_selects }}">{{ $select->texto_selects }}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                                 @break
-
-                                @case('text')
-                                <input type="text" name="preguntas[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
-                                @break
-
-                                @case('checkbox')
-                                @foreach ($dependencia->dependentQuestion->selects as $select)
-                                <input type="checkbox" name="preguntas[{{ $dependencia->dependentQuestion->id }}][]" value="{{ $select->texto_selects }}">
-                                {{ $select->texto_selects }}
-                                @endforeach
-                                @break
-
-                                @default
-                                <!-- Otro tipo de campos -->
                                 @endswitch
                             </div>
                             @endforeach
@@ -152,6 +167,8 @@
 
                     </div>
 
+                    <input type="submit" value="Crear">
+
                 </form>
             </div>
         </div>
@@ -173,38 +190,6 @@
 @endsection
 
 @section('script')
-
-<!-- Script para ocultar y mostrar secciones -->
-<script>
-    const botones = document.querySelectorAll('button');
-    botones.forEach(boton => {
-        boton.addEventListener('click', function() {
-            const targetId = this.dataset.target; // Accedemos al data-target
-            const seccion = document.getElementById(targetId);
-            if (seccion) {
-                // Alternar la visibilidad de la sección
-                if (seccion.style.display === 'none' || seccion.style.display === '') {
-                    seccion.style.display = 'block'; // Mostramos la sección
-                    this.textContent = 'Ocultar sección'; // Cambiamos el texto del botón
-                    // Habilitar inputs
-                    const inputs = seccion.querySelectorAll('input, textarea, select');
-                    inputs.forEach(input => {
-                        input.disabled = false; // Habilitar el campo
-                    });
-                } else {
-                    seccion.style.display = 'none'; // Ocultamos la sección
-                    this.textContent = `Mostrar sección`; // Restauramos el texto
-
-                    // Deshabilitar inputs
-                    const inputs = seccion.querySelectorAll('input, textarea, select');
-                    inputs.forEach(input => {
-                        input.disabled = true; // Deshabilitar el campo
-                    });
-                }
-            }
-        });
-    });
-</script>
 
 <!-- Script para autoajustar area de texto -->
 <script src="https://preline.co/assets/js/hs-textarea-autoheight.js"></script>
@@ -235,103 +220,6 @@
             }
         }
     });
-</script>
-
-<script>
-    function mostrarTipoCiudadano() {
-        const tipoDeCuidadano = document.getElementById('tipoDeCuidadano');
-        const prestador = document.getElementById('prestadorDeServicios');
-        const turista = document.getElementById('turista');
-
-        if (tipoDeCuidadano.value === 'PRESTADOR DE SERVICIOS TURISTICOS') {
-            prestador.style.display = 'block';
-            turista.style.display = 'none';
-        } else if (tipoDeCuidadano.value === 'TURISTA') {
-            turista.style.display = 'block';
-            prestador.style.display = 'none';
-        } else {
-            turista.style.display = 'none';
-            prestador.style.display = 'none';
-        }
-    }
-
-    function mostrarInput(selectId, inputId) {
-        const select = document.getElementById(selectId);
-        const input = document.getElementById(inputId);
-
-        if (select.value === 'OTRO') {
-            input.style.display = 'block';
-        } else {
-            input.style.display = 'none';
-        }
-    }
-
-    function mostrarTipoDeSociedad() {
-        const tipoDeConstitucion = document.getElementById('tipoDeConstitucion');
-        const tipoDeSociedad = document.getElementById('tipoDeSociedad');
-
-        if (tipoDeConstitucion.value === 'PERSONA JURIDICA') {
-            tipoDeSociedad.style.display = 'block';
-        } else
-            tipoDeSociedad.style.display = 'none';
-    }
-
-    function mostrarSectorDeEmpresa() {
-        const sectorDeEmpresa = document.getElementById('sectorDeEmpresa');
-        const sectorPrimario = document.getElementById('sectorPrimario');
-        const sectorSecundario = document.getElementById('sectorSecundario');
-        const sectorTerciario = document.getElementById('sectorTerciario');
-
-        if (sectorDeEmpresa.value === 'PRIMARIO') {
-            sectorPrimario.style.display = 'block';
-            sectorSecundario.style.display = 'none';
-            sectorTerciario.style.display = 'none';
-        } else if (sectorDeEmpresa.value === 'SECUNDARIO') {
-            sectorPrimario.style.display = 'none';
-            sectorSecundario.style.display = 'block';
-            sectorTerciario.style.display = 'none';
-        } else if (sectorDeEmpresa.value === 'TERCIARIO') {
-            sectorPrimario.style.display = 'none';
-            sectorSecundario.style.display = 'none';
-            sectorTerciario.style.display = 'block';
-        } else {
-            sectorPrimario.style.display = 'none';
-            sectorSecundario.style.display = 'none';
-            sectorTerciario.style.display = 'block';
-        }
-    }
-
-    function mostrarEmpleos() {
-        const cuantosEmpleosGenera = document.getElementById('cuantosEmpleosGenera');
-        const queEmpleosGenera = document.getElementById('queEmpleosGenera');
-
-        if (cuantosEmpleosGenera.value === 'NINGUNO') {
-            queEmpleosGenera.style.display = 'none';
-        } else
-            queEmpleosGenera.style.display = 'block';
-    }
-
-    function mostrarInputSi(IdSelect, IdInput) {
-        const select = document.getElementById(IdSelect);
-        const input = document.getElementById(IdInput);
-
-        if (select.value === 'SI') {
-            input.style.display = 'block';
-        } else {
-            input.style.display = 'none';
-        }
-    }
-
-    function mostrarInputNo(IdSelect1, IdInput1) {
-        const select1 = document.getElementById(IdSelect1);
-        const input1 = document.getElementById(IdInput1);
-
-        if (select1.value === 'NO') {
-            input1.style.display = 'block';
-        } else {
-            input1.style.display = 'none';
-        }
-    }
 </script>
 
 <!-- Script para drag and drop -->
@@ -538,4 +426,32 @@
     }
 </script>
 
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Escucha los cambios en las preguntas principales
+        document.body.addEventListener("change", (event) => {
+            if (event.target && event.target.classList.contains("pregunta-principal")) {
+                const questionId = event.target.getAttribute("data-question-id");
+                const selectedValue = event.target.value;
+
+                console.log("Pregunta ID:", questionId); // Para depuración
+                console.log("Valor seleccionado:", selectedValue); // Para depuración
+
+                // Encuentra las preguntas dependientes relacionadas
+                document.querySelectorAll(`.dependent-question[data-main-question="${questionId}"]`).forEach((dependiente) => {
+                    const condition = dependiente.getAttribute("data-condition");
+
+                    console.log("Condición de la pregunta dependiente:", condition); // Para depuración
+
+                    // Muestra u oculta según la condición
+                    if (selectedValue === condition) {
+                        dependiente.style.display = "block";
+                    } else {
+                        dependiente.style.display = "none";
+                    }
+                });
+            }
+        });
+    });
+</script>
 @endsection

@@ -9,12 +9,14 @@ class Questions extends Model
 {
     protected $table = 'questions';
 
-    protected $fillable = ['id_section',
-                            'texto_de_pregunta', 
-                            'tipo_de_pregunta', 
-                            'visible'];
+    protected $fillable = [
+        'id_section',
+        'texto_de_pregunta',
+        'tipo_de_pregunta',
+        'visible'
+    ];
 
-                            // Relación con Sección
+    // Relación con Sección
     public function seccion()
     {
         return $this->belongsTo(Section::class, 'id_section');
@@ -33,11 +35,12 @@ class Questions extends Model
     }
 
     // Este método recuperará todas las preguntas dependientes que están asociadas a una pregunta principal.
-    public function dependents() {
+    public function dependents()
+    {
         return $this->hasMany(DependentQuestion::class, 'id_mainquestion');
     }
 
 
+
     use HasFactory;
-    
 }

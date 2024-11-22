@@ -24,8 +24,9 @@ class DependentQuestion extends Model
     }
 
     public function dependentQuestion()
-    {
-        return $this->belongsTo(Questions::class, 'id_dependentquestion');
-    }
+{
+    return $this->belongsTo(Questions::class, 'id_dependentquestion');
+}
+
     use HasFactory;
 }
