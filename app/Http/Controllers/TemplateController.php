@@ -106,6 +106,43 @@ class TemplateController extends Controller
     // Función para crear formulario dependiendo los cambios realizados en la plantilla
     public function crearFormulario(Request $request)
     {
+          // Validar los datos
+    $request->validate([
+        'titulo' => 'required|string|max:255',
+        'descripcion' => 'required|string',
+        'preguntas' => 'required|array', // Asegurarnos de que preguntas sea un array
+        'preguntas.*' => 'nullable|string', // Cada respuesta es un string o null
+    ]);
+
+    
+        $usuario = Auth::user();
+
+        $dependencia = 0;
+
+        // Asignación de id de dependencia
+        if ($usuario->dependencia === 'secretaria de salud') {
+            $dependencia = 7;
+        } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
+            $dependencia = 7;
+        } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
+            $dependencia = 8;
+        } elseif (($usuario->dependencia === 'secretaria administrativa')) {
+            $dependencia = 9;
+        } elseif (($usuario->dependencia === 'secretaria de la mujer')) {
+            $dependencia = 10;
+        } elseif (($usuario->dependencia === 'secretaria de gestion social')) {
+            $dependencia = 11;
+        } elseif (($usuario->dependencia === 'secretaria de cultura')) {
+            $dependencia = 12;
+        } elseif (($usuario->dependencia === 'secretaria de infraestructura')) {
+            $dependencia = 13;
+        } elseif (($usuario->dependencia === 'secretaria de desarrollo')) {
+            $dependencia = 14;
+        } elseif (($usuario->dependencia === 'oficina gestion del riesgo')) {
+            $dependencia = 15;
+        } elseif (($usuario->dependencia === 'oficina de turismo')) {
+            $dependencia = 16;
+        }
 
         // Crear el nuevo formulario
         $formulario = new FormModel();
@@ -121,9 +158,12 @@ class TemplateController extends Controller
 
             // Si la pregunta tiene sección, asociarla con el formulario
             if ($pregunta) {
-                $idSection = $pregunta->id_section;
+                
+                $idSection = $pregunta->id_section ?? 0;
                 // Asociar la pregunta al formulario incluyendo el id_section
                 $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
+
+                
             }
         }
     }
@@ -131,6 +171,7 @@ class TemplateController extends Controller
         if ($request->has('nuevas_preguntas')) {
             foreach ($request->input('nuevas_preguntas') as $nuevaPregunta) {
                 $pregunta = Questions::create([
+                    'id_section' => $dependencia,
                     'texto_de_pregunta' => $nuevaPregunta['texto_de_pregunta'],
                     'tipo_de_pregunta' => $nuevaPregunta['tipo_de_pregunta'],
                     'visible' => $nuevaPregunta['visible'] ?? true,
@@ -140,7 +181,8 @@ class TemplateController extends Controller
                 
             }
         }
-
+        // dd($request->all());
+        dd($request->input('preguntas'));
         return redirect()->route('template.index')->with('success', 'Formulario creado exitosamente.');
     }
 }

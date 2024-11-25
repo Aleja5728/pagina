@@ -25,7 +25,7 @@ class Questions extends Model
     // Relación many-to-many con Formulario
     public function formularios()
     {
-        return $this->belongsToMany(FormModel::class, 'questionsforms', 'id_question', 'id_form');
+        return $this->belongsToMany(FormModel::class, 'questionsforms', 'id_question', 'id_form')->withPivot('id_section');
     }
 
     // Relación con PreguntaDependiente

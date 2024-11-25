@@ -22,8 +22,7 @@ class FormModel extends Model
     // Relación many-to-many con Pregunta
     public function preguntas()
     {
-        return $this->belongsToMany(Section::class, 'questionsforms', 'id_form', 'id_question')->withPivot('id_section')
-        ->withTimestamps();
+        return $this->belongsToMany(Questions::class, 'questionsforms', 'id_form', 'id_question')->withPivot('id_section')->withTimestamps();
     }
 
     use HasFactory;

@@ -54,47 +54,48 @@
                             @switch($pregunta->tipo_de_pregunta)
 
                             @case('text')
-                            <input type="text" name="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="text" name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
                             @break
 
                             @case('number')
-                            <input type="number" name="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="number" name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
                             @break
 
                             @case('select')
                             <select name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full pregunta-principal" data-question-id="{{ $pregunta->id }}">
-                                <option value="0">Seleccione una opción</option>
+                                <option value="0" disabled selected>Seleccione una opción</option>
                                 @foreach ($selects as $select)
                                 @if ($select->id_question == $pregunta->id)
-                                <option value="{{ $select -> texto_selects }}">{{ $select -> texto_selects }}</option>
+                                <option value="{{ $select->id }}">{{ $select -> texto_selects }}</option>
                                 @endif
                                 @endforeach
                             </select>
                             @break
 
                             @case('date')
-                            <input type="date" name="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="date" name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
                             @break
 
                             @case('time')
-                            <input type="time" name="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="time" name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
                             @break
 
                             @case('email')
-                            <input type="email" name="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="email" name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
                             @break
 
                             @case('textarea')
-                            <textarea name="preguntas[{{ $pregunta->id }}]" id="" class="w-full"></textarea>
+                            <textarea name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="w-full"></textarea>
                             @break
 
                             @case('checkbox')
                             <br>
                             @foreach ($selects as $select)
                             @if ($select->id_question == $pregunta->id)
-                            <br><input type="checkbox" name="{{ $select -> texto_selects }}" id=""> {{ $select -> texto_selects }}
+                            <br><input type="checkbox" name="preguntas[{{ $pregunta->id }}][]" id="preguntas[{{ $pregunta->id }}]"> {{ $select -> texto_selects }}
                             @endif
                             @endforeach
+                            
                             @break
 
 
