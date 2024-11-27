@@ -15,11 +15,8 @@ class TemplateController extends Controller
     // Función para llamar a la página de la plantilla
     public function index()
     {
-
         // Llama los registros de la tabla Questions con las preguntas principales juntos con las dependientes 
         $preguntas = Questions::with('dependents.dependentQuestion')->get();
-
-
 
         // Llama los registros de la tabla Selects
         $selects = DB::table('selects')->get();
@@ -109,47 +106,43 @@ class TemplateController extends Controller
     // Función para crear formulario dependiendo los cambios realizados en la plantilla
     public function crearFormulario(Request $request)
     {
+          // Validar los datos
+    $request->validate([
+        'titulo' => 'required|string|max:255',
+        'descripcion' => 'required|string',
+        'preguntas' => 'required|array', // Asegurarnos de que preguntas sea un array
+        'preguntas.*' => 'nullable|string', // Cada respuesta es un string o null
+    ]);
 
-
-        // Validar los datos
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'descripcion' => 'required|string',
-            'preguntas' => 'required|array',
-            'preguntas.*' => 'nullable|string',
-        ]);
-
-        dd($request->all());
-
+    
         $usuario = Auth::user();
 
         $dependencia = 0;
 
-
         // Asignación de id de dependencia
         if ($usuario->dependencia === 'secretaria de salud') {
-            $dependencia = 7;
-        } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
-            $dependencia = 7;
-        } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
-            $dependencia = 8;
-        } elseif (($usuario->dependencia === 'secretaria administrativa')) {
-            $dependencia = 9;
-        } elseif (($usuario->dependencia === 'secretaria de la mujer')) {
-            $dependencia = 10;
-        } elseif (($usuario->dependencia === 'secretaria de gestion social')) {
-            $dependencia = 11;
-        } elseif (($usuario->dependencia === 'secretaria de cultura')) {
-            $dependencia = 12;
-        } elseif (($usuario->dependencia === 'secretaria de infraestructura')) {
-            $dependencia = 13;
-        } elseif (($usuario->dependencia === 'secretaria de desarrollo')) {
-            $dependencia = 14;
-        } elseif (($usuario->dependencia === 'oficina gestion del riesgo')) {
-            $dependencia = 15;
-        } elseif (($usuario->dependencia === 'oficina de turismo')) {
-            $dependencia = 16;
-        }
+                $dependencia = 7;
+            } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
+                $dependencia = 7;
+            } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
+                $dependencia = 8;
+            } elseif (($usuario->dependencia === 'secretaria administrativa')) {
+                $dependencia = 9;
+            } elseif (($usuario->dependencia === 'secretaria de la mujer')) {
+                $dependencia = 10;
+            } elseif (($usuario->dependencia === 'secretaria de gestion social')) {
+                $dependencia = 11;
+            } elseif (($usuario->dependencia === 'secretaria de cultura')) {
+                $dependencia = 12;
+            } elseif (($usuario->dependencia === 'secretaria de infraestructura')) {
+                $dependencia = 13;
+            } elseif (($usuario->dependencia === 'secretaria de desarrollo')) {
+                $dependencia = 14;
+            } elseif (($usuario->dependencia === 'oficina gestion del riesgo')) {
+                $dependencia = 15;
+            } elseif (($usuario->dependencia === 'oficina de turismo')) {
+                $dependencia = 16;
+            }
 
         // Crear el nuevo formulario
         $formulario = new FormModel();
@@ -157,33 +150,23 @@ class TemplateController extends Controller
         $formulario->descripcion = $request->input('descripcion');
         $formulario->save();
 
-        // Asociar preguntas seleccionadas al formulario con id_section
-        if ($request->has('preguntas')) {
-            $procesadas = [];
-            $preguntas = $request->input('preguntas', []);
+       // Asociar preguntas seleccionadas al formulario con id_section
+    if ($request->has('preguntas')) {
+        foreach ($request->input('preguntas') as $preguntaId) {
+            // Obtener la pregunta
+            $pregunta = Questions::find($preguntaId);
 
-            foreach ($preguntas as $preguntaId) {
-                if (!is_null($preguntaId)) { 
-                    
-                    $pregunta = Questions::find($preguntaId);
+            // Si la pregunta tiene sección, asociarla con el formulario
+            if ($pregunta) {
+                
+                $idSection = $pregunta->id_section ?? $dependencia;
+                // Asociar la pregunta al formulario incluyendo el id_section
+                $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
 
-                    if ($pregunta) {
-                        $idSection = $pregunta->id_section ?? $dependencia;
-
-                        $procesadas[] = [
-                            'pregunta_id' => $preguntaId,
-                            'id_section' => $idSection,
-                        ];
-
-                        $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
-                    }
-                }
+                
             }
-
-            dd($procesadas);
         }
-
-
+    }
         // Si se añaden preguntas nuevas
         if ($request->has('nuevas_preguntas')) {
             foreach ($request->input('nuevas_preguntas') as $nuevaPregunta) {
@@ -195,6 +178,7 @@ class TemplateController extends Controller
                 ]);
 
                 $formulario->preguntas()->attach($pregunta->id);
+                
             }
         }
         // dd($request->all());
