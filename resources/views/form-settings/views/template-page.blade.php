@@ -31,7 +31,7 @@
         <div class="z-10 w-4/5 h-48 bg-fixed absolute right-0"> <!--Color de fondo-->
 
             <div class="m-auto static w-full h-auto">
-                <form action="{{ route('template.crearFormulario') }}" method="post" class=" p-2 pb-10 bg-white w-[95%] h-auto m-auto relative top-10 text-sm " ondrop="" enctype="multipart/form-data">
+                <form action="{{ route('template.crearFormulario') }}" method="post" class=" p-2 pb-10 bg-white w-[95%] h-auto m-auto relative top-10 text-sm" ondrop="" enctype="multipart/form-data">
                     @csrf
 
                     <div class="flex flex-col place-items-center ">
@@ -54,11 +54,11 @@
                             @switch($pregunta->tipo_de_pregunta)
 
                             @case('text')
-                            <input type="text" name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="text" name="preguntas[{{ $pregunta->id }}]"  class="w-full">
                             @break
 
                             @case('number')
-                            <input type="number" name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="number" name="preguntas[{{ $pregunta->id }}]" class="w-full">
                             @break
 
                             @case('select')
@@ -73,19 +73,19 @@
                             @break
 
                             @case('date')
-                            <input type="date" name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="date" name="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
                             @break
 
                             @case('time')
-                            <input type="time" name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="time" name="preguntas[{{ $pregunta->id }}]"  class="form-control w-full">
                             @break
 
                             @case('email')
-                            <input type="email" name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="email" name="preguntas[{{ $pregunta->id }}]"  class="form-control w-full">
                             @break
 
                             @case('textarea')
-                            <textarea name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="w-full"></textarea>
+                            <textarea name="preguntas[{{ $pregunta->id }}]"  class="w-full"></textarea>
                             @break
 
                             @case('checkbox')

@@ -15,8 +15,11 @@ class TemplateController extends Controller
     // Función para llamar a la página de la plantilla
     public function index()
     {
+
         // Llama los registros de la tabla Questions con las preguntas principales juntos con las dependientes 
         $preguntas = Questions::with('dependents.dependentQuestion')->get();
+
+
 
         // Llama los registros de la tabla Selects
         $selects = DB::table('selects')->get();
@@ -106,18 +109,22 @@ class TemplateController extends Controller
     // Función para crear formulario dependiendo los cambios realizados en la plantilla
     public function crearFormulario(Request $request)
     {
-          // Validar los datos
-    $request->validate([
-        'titulo' => 'required|string|max:255',
-        'descripcion' => 'required|string',
-        'preguntas' => 'required|array', // Asegurarnos de que preguntas sea un array
-        'preguntas.*' => 'nullable|string', // Cada respuesta es un string o null
-    ]);
 
-    
+
+        // Validar los datos
+        $request->validate([
+            'titulo' => 'required|string|max:255',
+            'descripcion' => 'required|string',
+            'preguntas' => 'required|array',
+            'preguntas.*' => 'nullable|string',
+        ]);
+
+        dd($request->all());
+
         $usuario = Auth::user();
 
         $dependencia = 0;
+
 
         // Asignación de id de dependencia
         if ($usuario->dependencia === 'secretaria de salud') {
@@ -150,23 +157,33 @@ class TemplateController extends Controller
         $formulario->descripcion = $request->input('descripcion');
         $formulario->save();
 
-       // Asociar preguntas seleccionadas al formulario con id_section
-    if ($request->has('preguntas')) {
-        foreach ($request->input('preguntas') as $preguntaId) {
-            // Obtener la pregunta
-            $pregunta = Questions::find($preguntaId);
+        // Asociar preguntas seleccionadas al formulario con id_section
+        if ($request->has('preguntas')) {
+            $procesadas = [];
+            $preguntas = $request->input('preguntas', []);
 
-            // Si la pregunta tiene sección, asociarla con el formulario
-            if ($pregunta) {
-                
-                $idSection = $pregunta->id_section ?? 0;
-                // Asociar la pregunta al formulario incluyendo el id_section
-                $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
+            foreach ($preguntas as $preguntaId) {
+                if (!is_null($preguntaId)) { 
+                    
+                    $pregunta = Questions::find($preguntaId);
 
-                
+                    if ($pregunta) {
+                        $idSection = $pregunta->id_section ?? $dependencia;
+
+                        $procesadas[] = [
+                            'pregunta_id' => $preguntaId,
+                            'id_section' => $idSection,
+                        ];
+
+                        $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
+                    }
+                }
             }
+
+            dd($procesadas);
         }
-    }
+
+
         // Si se añaden preguntas nuevas
         if ($request->has('nuevas_preguntas')) {
             foreach ($request->input('nuevas_preguntas') as $nuevaPregunta) {
@@ -178,7 +195,6 @@ class TemplateController extends Controller
                 ]);
 
                 $formulario->preguntas()->attach($pregunta->id);
-                
             }
         }
         // dd($request->all());
