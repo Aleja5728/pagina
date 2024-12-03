@@ -21,6 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(HomePageController::class)->group(function () {
         Route::get('/home-page', 'index')->name("home-page");
         Route::get('/settings-view', 'show')->name("settings-view");
+        
     });
 });
 

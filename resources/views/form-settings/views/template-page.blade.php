@@ -28,11 +28,14 @@
 
     <div class="relative h-auto">
 
+
         <div class="z-10 w-4/5 h-48 bg-fixed absolute right-0"> <!--Color de fondo-->
 
-            <div class="m-auto static w-full h-auto">
-                <form action="{{ route('template.crearFormulario') }}" method="post" class=" p-2 pb-10 bg-white w-[95%] h-auto m-auto relative top-10 text-sm" ondrop="" enctype="multipart/form-data">
+            <div class="m-auto static w-full h-auto ">
+                <form action="{{ route('template.crearFormulario') }}" method="post" class="form p-2 pb-10 bg-white w-[95%] h-auto m-auto relative top-10 text-sm " ondrop="" enctype="multipart/form-data">
                     @csrf
+
+
 
                     <div class="flex flex-col place-items-center ">
                         <textarea name="titulo" id="hs-default-height-with-autoheight-script" class="border-none p-0 pt-2 uppercase w-full text-center font-bold focus:ring-0 resize-none overflow-hidden"> Titulo del formulario </textarea>
@@ -40,29 +43,26 @@
                     </div>
 
                     <div class="contenedor flex flex-col gap-y-6 pt-6" id="formulario">
-                        <!-- Llamar a las preguntas desde la base de datos según el tipo de input definido -->
                         @foreach ($preguntasPrincipales as $pregunta)
                         <div class="form-group">
-                            <!-- Cambia el checkbox según el estado de la pregunta, si está visible o no -->
                             <label class="uppercase">
                                 {{ $pregunta->texto_de_pregunta}}
-                                <input type="checkbox" name="preguntas[]" class="absolute right-5" value="{{ $pregunta->id }}"
-                                    @if($pregunta->visible) checked @endif>
+                                <input type="checkbox" name="preguntas[{{ $pregunta->id }}]" class="absolute right-5" value="{{ $pregunta->id }}"
+                                    @if ($pregunta -> visible) checked @endif >
                             </label>
 
-                            <!-- Llama a las preguntas dependiendo el tipo de pregunta que se haya definido en su creación -->
                             @switch($pregunta->tipo_de_pregunta)
 
                             @case('text')
-                            <input type="text" name="preguntas[{{ $pregunta->id }}]"  class="w-full">
+                            <input type="text"  class="w-full">
                             @break
 
                             @case('number')
-                            <input type="number" name="preguntas[{{ $pregunta->id }}]" class="w-full">
+                            <input type="number" class="w-full">
                             @break
 
                             @case('select')
-                            <select name="preguntas[{{ $pregunta->id }}]" id="preguntas[{{ $pregunta->id }}]" class="form-control w-full pregunta-principal" data-question-id="{{ $pregunta->id }}">
+                            <select id="preguntas[{{ $pregunta->id }}]" class="form-control w-full pregunta-principal" data-question-id="{{ $pregunta->id }}">
                                 <option value="0" disabled selected>Seleccione una opción</option>
                                 @foreach ($selects as $select)
                                 @if ($select->id_question == $pregunta->id)
@@ -73,29 +73,29 @@
                             @break
 
                             @case('date')
-                            <input type="date" name="preguntas[{{ $pregunta->id }}]" class="form-control w-full">
+                            <input type="date"  class="form-control w-full">
                             @break
 
                             @case('time')
-                            <input type="time" name="preguntas[{{ $pregunta->id }}]"  class="form-control w-full">
+                            <input type="time" class="form-control w-full">
                             @break
 
                             @case('email')
-                            <input type="email" name="preguntas[{{ $pregunta->id }}]"  class="form-control w-full">
+                            <input type="email" class="form-control w-full">
                             @break
 
                             @case('textarea')
-                            <textarea name="preguntas[{{ $pregunta->id }}]"  class="w-full"></textarea>
+                            <textarea  class="w-full"></textarea>
                             @break
 
                             @case('checkbox')
                             <br>
                             @foreach ($selects as $select)
                             @if ($select->id_question == $pregunta->id)
-                            <br><input type="checkbox" name="preguntas[{{ $pregunta->id }}][]" id="preguntas[{{ $pregunta->id }}]"> {{ $select -> texto_selects }}
+                            <br><input type="checkbox"  id="preguntas[{{ $pregunta->id }}]"> {{ $select -> texto_selects }}
                             @endif
                             @endforeach
-                            
+
                             @break
 
 
@@ -113,31 +113,31 @@
                                 @switch($dependencia->dependentQuestion->tipo_de_pregunta)
 
                                 @case('text')
-                                <input type="text" name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                <input type="text"  class="form-control w-full">
                                 @break
 
                                 @case('number')
-                                <input type="text" name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                <input type="text"  class="form-control w-full">
                                 @break
 
                                 @case('date')
-                                <input type="date" name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                <input type="date"  class="form-control w-full">
                                 @break
 
                                 @case('time')
-                                <input type="time" name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                <input type="time"  class="form-control w-full">
                                 @break
 
                                 @case('email')
-                                <input type="email" name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                <input type="email"  class="form-control w-full">
                                 @break
 
                                 @case('textarea')
-                                <textarea name="respuesta[{{ $dependencia->dependentQuestion->id }}]" id="" class="w-full"></textarea>
+                                <textarea id="" class="w-full"></textarea>
                                 @break
 
                                 @case('select')
-                                <select name="respuesta[{{ $dependencia->dependentQuestion->id }}]" class="form-control w-full">
+                                <select class="form-control w-full">
                                     <option value="0">Seleccione una opción</option>
                                     @foreach ($selects as $select)
                                     @if ($select->id_question == $dependencia->dependentQuestion->id)
@@ -168,7 +168,7 @@
 
                     </div>
 
-                    <input type="submit" value="Crear">
+                    <input type="submit" value="Crear" class="w-full uppercase p-4 mt-6 bg-[#eeeeee] hover:bg-[#ccc] tracking-wide">
 
                 </form>
             </div>
@@ -191,6 +191,15 @@
 @endsection
 
 @section('script')
+<!-- 
+<script>
+    document.querySelector('.form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita el envío para inspeccionar los datos
+        const formData = new FormData(this);
+        const preguntasSeleccionadas = formData.getAll('preguntas[]');
+        console.log('Preguntas seleccionadas:', preguntasSeleccionadas);
+    });
+</script> -->
 
 <!-- Script para autoajustar area de texto -->
 <script src="https://preline.co/assets/js/hs-textarea-autoheight.js"></script>
@@ -427,6 +436,7 @@
     }
 </script>
 
+<!-- Script para mostrar las preguntas dependientes -->
 <script>
     document.addEventListener("DOMContentLoaded", () => {
         // Escucha los cambios en las preguntas principales

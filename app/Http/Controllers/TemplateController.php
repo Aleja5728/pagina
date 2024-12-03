@@ -75,12 +75,6 @@ class TemplateController extends Controller
             $dependencia = 16;
         }
 
-        // Crear el nuevo formulario
-        $formulario = new FormModel();
-        $formulario->titulo = $request->input('titulo');
-        $formulario->descripcion = $request->input('descripcion');
-        $formulario->save();
-
         // Recibe pregunta y tipo de pregunta creadas con el drag and drop y las guarda en la tabla de preguntas
         $preguntas = new Questions();
         $preguntas->id_section = $dependencia;
@@ -98,22 +92,16 @@ class TemplateController extends Controller
             }
         }
 
-        // Retorna mensaje de satisfactorio si se guardo la pregunta correctamente
-        return response()->json([
-            'mensaje' => 'Pregunta guardada exitosamente',
-            'pregunta' => $preguntas
-        ], 201);
     }
 
     // Función para crear formulario dependiendo los cambios realizados en la plantilla
     public function crearFormulario(Request $request)
     {
+
         // Validar los datos
-        $request->validate([
-            'titulo' => 'required|string|max:255',
+        $validacionDeFormulario = $request->validate([
+            'titulo' => 'required|string|max:255|unique:forms,titulo',
             'descripcion' => 'required|string',
-            'preguntas' => 'required|array', // Asegurarnos de que preguntas sea un array
-            'preguntas.*' => 'nullable|string', // Cada respuesta es un string o null
         ]);
 
 
@@ -146,23 +134,26 @@ class TemplateController extends Controller
             $dependencia = 16;
         }
 
+
         // Crear el nuevo formulario
-        $formulario = new FormModel();
+        $formulario = new FormModel($validacionDeFormulario);
         $formulario->titulo = $request->input('titulo');
         $formulario->descripcion = $request->input('descripcion');
-        $formulario->save();
+        if($formulario->save()){
+
 
         // Asociar preguntas seleccionadas al formulario con id_section
         if ($request->has('preguntas')) {
             foreach ($request->input('preguntas') as $preguntaId) {
                 // Obtener la pregunta
                 $pregunta = Questions::find($preguntaId);
-
+                
                 // Si la pregunta tiene sección, asociarla con el formulario
                 if ($pregunta) {
 
                     $idSection = $pregunta->id_section ?? $dependencia;
                     // Asociar la pregunta al formulario incluyendo el id_section
+
                     $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
                 }
             }
@@ -180,9 +171,13 @@ class TemplateController extends Controller
                 $formulario->preguntas()->attach($pregunta->id);
             }
         }
+    }
+
         // dd($request->all());
         // dd($request->input('preguntas'));
-        return redirect()->route('template.show', $formulario->id)->with('success', 'Formulario creado exitosamente.');
+        // dd($formulario);
+        
+        return redirect()->route('home-page');
     }
 
     public function show($id)

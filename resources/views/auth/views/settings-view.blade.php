@@ -49,27 +49,13 @@
                         <img src="{{ asset('img/navegador.png') }}" alt="" class="w-10 sm:w-12">
                     </div>
                     <div class="relative right-0">
-                        <p class="sm:text-xl text-l text-white font-normal font-montserrat text-right sm:mt-24 mt-8 mr-6">PUBLICAR FORMULARIOS
-                        </p>
-                    </div>
-                </button>
-            </div>
-        </a>
-
-        <a href="#">
-            <div>
-                <button
-                    class="boton_publicar h-24 sm:h-36 sm:m-2 w-full mt-4  w-full bg-gradient-to-r from-[#F5CA4A] to-[#F2BF24] shadow-md hover:from-[#F2BF24] hover:to-[#F5CA4A]">
-                    <div class="absolute ml-5 mt-2 sm:ml-3 sm:mt-2">
-                        <img src="{{ asset('img/sitio-web.png') }}" alt="" class="w-10 sm:w-12">
-                    </div>
-                    <div class="relative right-0">
                         <p class="sm:text-xl text-l text-white font-normal font-montserrat text-right sm:mt-24 mt-8 mr-6">EDITAR FORMULARIOS
                         </p>
                     </div>
                 </button>
             </div>
         </a>
+
 
     </div>
 @endsection

@@ -8,13 +8,31 @@
 <!-- Componente de menú -->
 <x-dropdown-menu> </x-dropdown-menu>
 
-<!-- Componente de información -->
-<!-- Componente de información -->
-<div class="z-10 grid grid-cols-1 gap-x-2 gap-y-2 sm:grid-cols-6 mr-8 select-none">
-    <x-form-details :id="'form1'" :titulo="'Formulario 1'" :descripcion="'Descripción 1'" :imagen="'path_to_image_1'"></x-form-details>
-    <x-form-details :id="'form2'" :titulo="'Formulario 2'" :descripcion="'Descripción 2'" :imagen="'path_to_image_2'"></x-form-details>
-    <x-form-details :id="'form3'" :titulo="'Formulario 3'" :descripcion="'Descripción 3'" :imagen="'path_to_image_3'"></x-form-details>
+
+<div class="grid grid-cols-3 sm:col-span-2 gap-6 m-8">
+    @foreach($formulario as $form)
+    <div class="w-full h-72 rounded-3xl border-2 shadow-md">
+        <div class="w-full h-14 p-5">
+            <div class="relative">
+                <a href="{{ url('/template/').'/'.$form->id }}" class="text-sm font-medium">{{ $form->titulo }}</a>
+                <button class="absolute right-0 top-0 ">
+                    <img src=" {{ asset('img/puntos.png') }} " alt="Tres puntos" class="w-5 ">
+                </button>
+
+            </div>
+        </div>
+        <div class="w-full h-32 bg-[#EAECEE]">
+            <img src="" alt="" class="h-32 w-full bg-contain">
+        </div>
+        <div class="w-full h-16 p-5">
+            <p class="text-xs text-gray-400 line-clamp-3"> {{ $form->descripcion }}</p>
+        </div>
+    </div>
+    @endforeach
 </div>
+
+
+
 
 
 @endsection
