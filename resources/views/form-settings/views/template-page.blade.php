@@ -31,7 +31,7 @@
 
         <div class="z-10 w-4/5 h-48 bg-fixed absolute right-0"> <!--Color de fondo-->
 
-            <div class="m-auto static w-full h-auto ">
+            <div class="m-auto static w-full h-auto">
                 <form action="{{ route('template.crearFormulario') }}" method="post" class="form p-2 pb-10 bg-white w-[95%] h-auto m-auto relative top-10 text-sm " ondrop="" enctype="multipart/form-data">
                     @csrf
 
@@ -54,7 +54,7 @@
                             @switch($pregunta->tipo_de_pregunta)
 
                             @case('text')
-                            <input type="text"  class="w-full">
+                            <input type="text" class="w-full">
                             @break
 
                             @case('number')
@@ -66,14 +66,14 @@
                                 <option value="0" disabled selected>Seleccione una opción</option>
                                 @foreach ($selects as $select)
                                 @if ($select->id_question == $pregunta->id)
-                                <option value="{{ $select->id }}">{{ $select -> texto_selects }}</option>
+                                <option value="{{ $select->texto_selects }}">{{ $select -> texto_selects }}</option>
                                 @endif
                                 @endforeach
                             </select>
                             @break
 
                             @case('date')
-                            <input type="date"  class="form-control w-full">
+                            <input type="date" class="form-control w-full">
                             @break
 
                             @case('time')
@@ -85,14 +85,14 @@
                             @break
 
                             @case('textarea')
-                            <textarea  class="w-full"></textarea>
+                            <textarea class="w-full"></textarea>
                             @break
 
                             @case('checkbox')
                             <br>
                             @foreach ($selects as $select)
                             @if ($select->id_question == $pregunta->id)
-                            <br><input type="checkbox"  id="preguntas[{{ $pregunta->id }}]"> {{ $select -> texto_selects }}
+                            <br><input type="checkbox" id="preguntas[{{ $pregunta->id }}]"> {{ $select -> texto_selects }}
                             @endif
                             @endforeach
 
@@ -113,23 +113,23 @@
                                 @switch($dependencia->dependentQuestion->tipo_de_pregunta)
 
                                 @case('text')
-                                <input type="text"  class="form-control w-full">
+                                <input type="text" class="form-control w-full">
                                 @break
 
                                 @case('number')
-                                <input type="text"  class="form-control w-full">
+                                <input type="text" class="form-control w-full">
                                 @break
 
                                 @case('date')
-                                <input type="date"  class="form-control w-full">
+                                <input type="date" class="form-control w-full">
                                 @break
 
                                 @case('time')
-                                <input type="time"  class="form-control w-full">
+                                <input type="time" class="form-control w-full">
                                 @break
 
                                 @case('email')
-                                <input type="email"  class="form-control w-full">
+                                <input type="email" class="form-control w-full">
                                 @break
 
                                 @case('textarea')
@@ -138,7 +138,7 @@
 
                                 @case('select')
                                 <select class="form-control w-full">
-                                    <option value="0">Seleccione una opción</option>
+                                    <option value="0" disabled selected>Seleccione una opción</option>
                                     @foreach ($selects as $select)
                                     @if ($select->id_question == $dependencia->dependentQuestion->id)
                                     <option value="{{ $select->texto_selects }}">{{ $select->texto_selects }}</option>
@@ -174,7 +174,7 @@
             </div>
         </div>
 
-
+        <!-- Creación de nuevos campos -->
         <div class="fixed w-1/5 bg-white bg-fixed ml-2 rounded-xl h-4/5 border-4">
             <div class="flex flex-col p-5 gap-y-4 pt-20">
                 <button type="button" id="botonAreaDeTexto" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Area de texto </button>
@@ -191,15 +191,6 @@
 @endsection
 
 @section('script')
-<!-- 
-<script>
-    document.querySelector('.form').addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita el envío para inspeccionar los datos
-        const formData = new FormData(this);
-        const preguntasSeleccionadas = formData.getAll('preguntas[]');
-        console.log('Preguntas seleccionadas:', preguntasSeleccionadas);
-    });
-</script> -->
 
 <!-- Script para autoajustar area de texto -->
 <script src="https://preline.co/assets/js/hs-textarea-autoheight.js"></script>
@@ -445,14 +436,9 @@
                 const questionId = event.target.getAttribute("data-question-id");
                 const selectedValue = event.target.value;
 
-                console.log("Pregunta ID:", questionId); // Para depuración
-                console.log("Valor seleccionado:", selectedValue); // Para depuración
-
                 // Encuentra las preguntas dependientes relacionadas
                 document.querySelectorAll(`.dependent-question[data-main-question="${questionId}"]`).forEach((dependiente) => {
                     const condition = dependiente.getAttribute("data-condition");
-
-                    console.log("Condición de la pregunta dependiente:", condition); // Para depuración
 
                     // Muestra u oculta según la condición
                     if (selectedValue === condition) {

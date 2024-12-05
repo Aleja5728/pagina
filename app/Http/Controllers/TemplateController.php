@@ -91,7 +91,6 @@ class TemplateController extends Controller
                 $opcionPregunta->save();
             }
         }
-
     }
 
     // Función para crear formulario dependiendo los cambios realizados en la plantilla
@@ -139,44 +138,44 @@ class TemplateController extends Controller
         $formulario = new FormModel($validacionDeFormulario);
         $formulario->titulo = $request->input('titulo');
         $formulario->descripcion = $request->input('descripcion');
-        if($formulario->save()){
+        if ($formulario->save()) {
 
 
-        // Asociar preguntas seleccionadas al formulario con id_section
-        if ($request->has('preguntas')) {
-            foreach ($request->input('preguntas') as $preguntaId) {
-                // Obtener la pregunta
-                $pregunta = Questions::find($preguntaId);
-                
-                // Si la pregunta tiene sección, asociarla con el formulario
-                if ($pregunta) {
+            // Asociar preguntas seleccionadas al formulario con id_section
+            if ($request->has('preguntas')) {
+                foreach ($request->input('preguntas') as $preguntaId) {
+                    // Obtener la pregunta
+                    $pregunta = Questions::find($preguntaId);
 
-                    $idSection = $pregunta->id_section ?? $dependencia;
-                    // Asociar la pregunta al formulario incluyendo el id_section
+                    // Si la pregunta tiene sección, asociarla con el formulario
+                    if ($pregunta) {
 
-                    $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
+                        $idSection = $pregunta->id_section ?? $dependencia;
+                        // Asociar la pregunta al formulario incluyendo el id_section
+
+                        $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
+                    }
+                }
+            }
+            // Si se añaden preguntas nuevas
+            if ($request->has('nuevas_preguntas')) {
+                foreach ($request->input('nuevas_preguntas') as $nuevaPregunta) {
+                    $pregunta = Questions::create([
+                        'id_section' => $dependencia,
+                        'texto_de_pregunta' => $nuevaPregunta['texto_de_pregunta'],
+                        'tipo_de_pregunta' => $nuevaPregunta['tipo_de_pregunta'],
+                        'visible' => $nuevaPregunta['visible'] ?? true,
+                    ]);
+
+                    $formulario->preguntas()->attach($pregunta->id);
                 }
             }
         }
-        // Si se añaden preguntas nuevas
-        if ($request->has('nuevas_preguntas')) {
-            foreach ($request->input('nuevas_preguntas') as $nuevaPregunta) {
-                $pregunta = Questions::create([
-                    'id_section' => $dependencia,
-                    'texto_de_pregunta' => $nuevaPregunta['texto_de_pregunta'],
-                    'tipo_de_pregunta' => $nuevaPregunta['tipo_de_pregunta'],
-                    'visible' => $nuevaPregunta['visible'] ?? true,
-                ]);
-
-                $formulario->preguntas()->attach($pregunta->id);
-            }
-        }
-    }
 
         // dd($request->all());
         // dd($request->input('preguntas'));
         // dd($formulario);
-        
+
         return redirect()->route('home-page');
     }
 
