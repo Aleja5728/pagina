@@ -20,7 +20,6 @@ class HomePageController extends Controller
         $preguntasFormulario = DB::table('questionsforms')->get();
         $preguntas = DB::table('questions')->get();
         $preguntasDependientes = DB::table('selects')->get();
-        
 
 
         return view("auth.views.home-page", compact('usuarios', 'formulario', 'preguntasFormulario', 'preguntas', 'preguntasDependientes'));

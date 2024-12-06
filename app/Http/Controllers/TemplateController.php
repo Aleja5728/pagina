@@ -52,7 +52,7 @@ class TemplateController extends Controller
 
         // Asignación de id de dependencia
         if ($usuario->dependencia === 'secretaria de salud') {
-            $dependencia = 7;
+            $dependencia = 6;
         } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
             $dependencia = 7;
         } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
@@ -75,8 +75,15 @@ class TemplateController extends Controller
             $dependencia = 16;
         }
 
+        $validated = $request->validate([
+            'texto_de_pregunta' => 'required|string|max:255',
+            'tipo_de_pregunta' => 'required|string|in:textarea,text,select,number,date,image',
+            'texto_selects' => 'nullable|array',
+            'texto_selects.*' => 'string|max:255', // Cada opción debe ser una cadena válida
+        ]);
+
         // Recibe pregunta y tipo de pregunta creadas con el drag and drop y las guarda en la tabla de preguntas
-        $preguntas = new Questions();
+        $preguntas = new Questions($validated);
         $preguntas->id_section = $dependencia;
         $preguntas->texto_de_pregunta = $request->input('texto_de_pregunta');
         $preguntas->tipo_de_pregunta = $request->input('tipo_de_pregunta');
@@ -91,6 +98,7 @@ class TemplateController extends Controller
                 $opcionPregunta->save();
             }
         }
+
     }
 
     // Función para crear formulario dependiendo los cambios realizados en la plantilla
@@ -172,11 +180,6 @@ class TemplateController extends Controller
             }
         }
 
-        // dd($request->all());
-        // dd($request->input('preguntas'));
-        // dd($formulario);
-
-        return redirect()->route('home-page');
     }
 
     public function show($id)

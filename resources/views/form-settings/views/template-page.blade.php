@@ -79,6 +79,10 @@
                             @case('time')
                             <input type="time" class="form-control w-full">
                             @break
+                            
+                            @case('image')
+                            <input type="file" class="form-control w-full">
+                            @break
 
                             @case('email')
                             <input type="email" class="form-control w-full">
@@ -176,13 +180,18 @@
 
         <!-- Creación de nuevos campos -->
         <div class="fixed w-1/5 bg-white bg-fixed ml-2 rounded-xl h-4/5 border-4">
-            <div class="flex flex-col p-5 gap-y-4 pt-20">
+            
+            <div class="flex flex-col p-5 gap-y-6 pt-36">
                 <button type="button" id="botonAreaDeTexto" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Area de texto </button>
                 <button type="button" id="botonTexto" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Texto </button>
                 <button type="button" id="botonNumber" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Número </button>
                 <button type="button" id="botonSelect" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Selección </button>
                 <button type="button" id="botonDate" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Fecha </button>
                 <button type="button" id="botonImage" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Imagen </button>
+            </div>
+
+            <div>
+                <p class="text-gray-400 p-6 text-sm">™ Recarga la página después de crear el nuevo campo</p>
             </div>
 
         </div>
@@ -291,8 +300,10 @@
         const newField = document.createElement('div');
         let textoPregunta = prompt("Ingresa el texto de la pregunta");
         newField.classList.add('nuevoCampo');
+        
 
         if (textoPregunta !== null && textoPregunta !== '') {
+            
             if (type === 'textarea') {
                 newField.innerHTML = `
                     <div class="field-input mt-3">
@@ -392,11 +403,11 @@
     }
 
     // Función para agregar campo creado a la base de datos
-    async function guardarPregunta(textoPregunta, tipo, opciones) {
+    async function guardarPregunta(textoPregunta, tipo, opciones=[]) {
         const preguntaData = {
             texto_de_pregunta: textoPregunta,
             tipo_de_pregunta: tipo,
-            texto_selects: opciones,
+            texto_selects: opciones || null,
         };
 
         try {
@@ -410,15 +421,14 @@
             });
 
             if (response.ok) {
-                const data = await response.json();
                 alert('Pregunta guardada exitosamente en la base de datos');
             } else {
-                alert('Hubo un error al guardar la pregunta');
                 console.error('Error en la respuesta:', response.statusText);
             }
         } catch (error) {
             console.error('Error en la solicitud:', error);
         }
+        
     }
 
 
