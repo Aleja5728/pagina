@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DependentQuestion;
 use App\Models\Questions;
 use App\Models\SelectsModel;
 use App\Models\FormModel;
@@ -18,29 +17,14 @@ class TemplateController extends Controller
     public function index()
     {
         // Llama los registros de la tabla Questions con las preguntas principales juntos con las dependientes 
-        $preguntas = Questions::with('dependents.dependentQuestion')->get();
+        $preguntas = DB::table('questions')->get();
 
         // Llama los registros de la tabla Selects
         $selects = DB::table('selects')->get();
 
-        // Encuentra los id de las preguntas dependientes
-        // Con la función flatMap se recorren todas las preguntas y se extrae el id de las preguntas dependientes con Pluck, se genera una lista única de id
-        $dependientesIds = $preguntas->flatMap(function ($pregunta) {
-            return $pregunta->dependents->pluck('id_dependentquestion');
-        });
-
-        // Se excluyen todas las preguntas cuyo id este en la lista de id dependientes 
-        $preguntasPrincipales = $preguntas->reject(function ($pregunta) use ($dependientesIds) {
-            return $dependientesIds->contains($pregunta->id);
-        });
-
-        // Se seleccionan unicamente las preguntas que son dependientes 
-        $preguntasDependientes = $preguntas->filter(function ($pregunta) use ($dependientesIds) {
-            return $dependientesIds->contains($pregunta->id);
-        });
 
         // Se envían las preguntas principales, dependientes y los select a la vista
-        return view('form-settings.views.template-page', compact('preguntasPrincipales', 'preguntasDependientes', 'selects'));
+        return view('form-settings.views.template-page', compact('preguntas', 'selects'));
     }
 
     // Función para guardar nuevas preguntas en la base de datos
@@ -179,7 +163,7 @@ class TemplateController extends Controller
                 }
             }
         }
-
+        return redirect('home-page');
     }
 
     public function show($id)

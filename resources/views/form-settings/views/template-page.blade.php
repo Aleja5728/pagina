@@ -43,7 +43,7 @@
                     </div>
 
                     <div class="contenedor flex flex-col gap-y-6 pt-6" id="formulario">
-                        @foreach ($preguntasPrincipales as $pregunta)
+                        @foreach ($preguntas as $pregunta)
                         <div class="form-group">
                             <label class="uppercase">
                                 {{ $pregunta->texto_de_pregunta}}
@@ -62,7 +62,7 @@
                             @break
 
                             @case('select')
-                            <select id="preguntas[{{ $pregunta->id }}]" class="form-control w-full pregunta-principal" data-question-id="{{ $pregunta->id }}">
+                            <select id="preguntas[{{ $pregunta->id }}]" class="form-control w-full " >
                                 <option value="0" disabled selected>Seleccione una opción</option>
                                 @foreach ($selects as $select)
                                 @if ($select->id_question == $pregunta->id)
@@ -79,7 +79,7 @@
                             @case('time')
                             <input type="time" class="form-control w-full">
                             @break
-                            
+
                             @case('image')
                             <input type="file" class="form-control w-full">
                             @break
@@ -105,54 +105,6 @@
 
                             @default
                             @endswitch
-
-                            <!-- Preguntas dependientes -->
-                            @foreach ($pregunta->dependents as $dependencia)
-                            <div class="form-group dependent-question pt-6"
-                                id="dependent-{{ $dependencia->dependentQuestion->id }}"
-                                style="display: none;"
-                                data-main-question="{{ $pregunta->id }}"
-                                data-condition="{{ $dependencia->condition }}">
-                                <label>{{ $dependencia->dependentQuestion->texto_de_pregunta }}</label>
-                                @switch($dependencia->dependentQuestion->tipo_de_pregunta)
-
-                                @case('text')
-                                <input type="text" class="form-control w-full">
-                                @break
-
-                                @case('number')
-                                <input type="text" class="form-control w-full">
-                                @break
-
-                                @case('date')
-                                <input type="date" class="form-control w-full">
-                                @break
-
-                                @case('time')
-                                <input type="time" class="form-control w-full">
-                                @break
-
-                                @case('email')
-                                <input type="email" class="form-control w-full">
-                                @break
-
-                                @case('textarea')
-                                <textarea id="" class="w-full"></textarea>
-                                @break
-
-                                @case('select')
-                                <select class="form-control w-full">
-                                    <option value="0" disabled selected>Seleccione una opción</option>
-                                    @foreach ($selects as $select)
-                                    @if ($select->id_question == $dependencia->dependentQuestion->id)
-                                    <option value="{{ $select->texto_selects }}">{{ $select->texto_selects }}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                                @break
-                                @endswitch
-                            </div>
-                            @endforeach
 
                         </div>
 
@@ -180,7 +132,7 @@
 
         <!-- Creación de nuevos campos -->
         <div class="fixed w-1/5 bg-white bg-fixed ml-2 rounded-xl h-4/5 border-4">
-            
+
             <div class="flex flex-col p-5 gap-y-6 pt-36">
                 <button type="button" id="botonAreaDeTexto" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Area de texto </button>
                 <button type="button" id="botonTexto" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Texto </button>
@@ -300,10 +252,10 @@
         const newField = document.createElement('div');
         let textoPregunta = prompt("Ingresa el texto de la pregunta");
         newField.classList.add('nuevoCampo');
-        
+
 
         if (textoPregunta !== null && textoPregunta !== '') {
-            
+
             if (type === 'textarea') {
                 newField.innerHTML = `
                     <div class="field-input mt-3">
@@ -403,7 +355,7 @@
     }
 
     // Función para agregar campo creado a la base de datos
-    async function guardarPregunta(textoPregunta, tipo, opciones=[]) {
+    async function guardarPregunta(textoPregunta, tipo, opciones = []) {
         const preguntaData = {
             texto_de_pregunta: textoPregunta,
             tipo_de_pregunta: tipo,
@@ -428,7 +380,7 @@
         } catch (error) {
             console.error('Error en la solicitud:', error);
         }
-        
+
     }
 
 
@@ -437,28 +389,4 @@
     }
 </script>
 
-<!-- Script para mostrar las preguntas dependientes -->
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        // Escucha los cambios en las preguntas principales
-        document.body.addEventListener("change", (event) => {
-            if (event.target && event.target.classList.contains("pregunta-principal")) {
-                const questionId = event.target.getAttribute("data-question-id");
-                const selectedValue = event.target.value;
-
-                // Encuentra las preguntas dependientes relacionadas
-                document.querySelectorAll(`.dependent-question[data-main-question="${questionId}"]`).forEach((dependiente) => {
-                    const condition = dependiente.getAttribute("data-condition");
-
-                    // Muestra u oculta según la condición
-                    if (selectedValue === condition) {
-                        dependiente.style.display = "block";
-                    } else {
-                        dependiente.style.display = "none";
-                    }
-                });
-            }
-        });
-    });
-</script>
 @endsection

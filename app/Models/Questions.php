@@ -34,11 +34,6 @@ class Questions extends Model
         return $this->hasMany(SelectsModel::class, 'id_question');
     }
 
-    // Este método recuperará todas las preguntas dependientes que están asociadas a una pregunta principal.
-    public function dependents()
-    {
-        return $this->hasMany(DependentQuestion::class, 'id_mainquestion');
-    }
 
 
 

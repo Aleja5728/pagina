@@ -28,35 +28,34 @@ class HomePageController extends Controller
 
     public function store(Request $request)
     {
-       
 
         $formularioId = $request->input('id_form');
 
         $formulario = FormModel::find($formularioId);
 
         foreach ($request->input('respuesta') as $preguntaId => $respuesta) {
-        
-        if (is_array($respuesta)) {
-            foreach ($respuesta as $opcion) {
-                
+
+            if (is_array($respuesta)) {
+                foreach ($respuesta as $opcion) {
+
+                    AnswersModel::create([
+                        'id_form' => $formularioId,
+                        'id_question' => $preguntaId,
+                        'respuesta' => $opcion,
+                    ]);
+                }
+            } else {
+
                 AnswersModel::create([
                     'id_form' => $formularioId,
                     'id_question' => $preguntaId,
-                    'respuesta' => $opcion,
+                    'respuesta' => $respuesta,
                 ]);
             }
-        } else {
-            
-            AnswersModel::create([
-                'id_form' => $formularioId,
-                'id_question' => $preguntaId,
-                'respuesta' => $respuesta,
-            ]);
         }
-    }
 
-        
-    return redirect()->back()->with('success', 'Respuestas guardadas exitosamente')->with('error', 'Mensaje de error');
+
+        return redirect()->back()->with('success', 'Respuestas guardadas exitosamente')->with('error', 'Mensaje de error');
 
         // return redirect()->back()->with('success', 'Respuestas guardadas exitosamente');
     }
