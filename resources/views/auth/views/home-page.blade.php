@@ -8,8 +8,18 @@
 <!-- Componente de menú -->
 <x-dropdown-menu> </x-dropdown-menu>
 
+@if( Session::has( 'Exito' ))
+<div class="py-4 px-8 m-6 text-sm text-green-800 rounded-lg bg-green-100" role="success">
+    {{ Session::get( 'Exito' ) }}
+</div>
+@endif
 
 <div class="grid grid-cols-3 sm:col-span-2 gap-6 m-8">
+
+
+
+
+
     @foreach($formulario as $form)
     <div class="w-full h-72 rounded-3xl border-2 shadow-md">
         <div class="w-full h-14 p-5">

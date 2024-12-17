@@ -34,6 +34,11 @@
             <div class="m-auto static w-full h-auto">
                 <form action="{{ route('template.crearFormulario') }}" method="post" class="form p-2 pb-10 bg-white w-[95%] h-auto m-auto relative top-10 text-sm " ondrop="" enctype="multipart/form-data">
                     @csrf
+                    @error('titulo')
+                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
+                        {{ $message }}
+                    </div>
+                    @enderror
 
 
 
@@ -62,11 +67,11 @@
                             @break
 
                             @case('select')
-                            <select id="preguntas[{{ $pregunta->id }}]" class="form-control w-full " >
+                            <select id="preguntas[{{ $pregunta->id }}]" class="form-control w-full ">
                                 <option value="0" disabled selected>Seleccione una opción</option>
                                 @foreach ($selects as $select)
                                 @if ($select->id_question == $pregunta->id)
-                                <option value="{{ $select->texto_selects }}">{{ $select -> texto_selects }}</option>
+                                <option value="{{ $select->texto_selects }}" class="uppercase">{{ $select -> texto_selects }}</option>
                                 @endif
                                 @endforeach
                             </select>
@@ -96,7 +101,7 @@
                             <br>
                             @foreach ($selects as $select)
                             @if ($select->id_question == $pregunta->id)
-                            <br><input type="checkbox" id="preguntas[{{ $pregunta->id }}]"> {{ $select -> texto_selects }}
+                            <br><input type="checkbox" id="preguntas[{{ $pregunta->id }}]" class="uppercase"> {{ $select -> texto_selects }}
                             @endif
                             @endforeach
 
@@ -140,6 +145,7 @@
                 <button type="button" id="botonSelect" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Selección </button>
                 <button type="button" id="botonDate" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Fecha </button>
                 <button type="button" id="botonImage" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Imagen </button>
+                <button type="button" id="botonCheck" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Checkbox </button>
             </div>
 
             <div>
@@ -216,6 +222,10 @@
             id: 'botonImage',
             type: 'image'
         },
+        {
+            id: 'botonCheck',
+            type: 'checkbox'
+        },
     ];
 
     agregados.forEach(agregado => {
@@ -290,7 +300,7 @@
                     }
 
                     valores.forEach(function(valor) {
-                        opcionesInner += `<option> ${valor} </option>`
+                        opcionesInner += `<option class="uppercase"> ${valor} </option>`
                     })
 
                     newField.innerHTML = `
@@ -301,6 +311,42 @@
                                 <option value="defecto" >Seleccione una opción</option>
                                 ${opcionesInner}
                             </select>
+                        </label>
+                    </div>
+                    <button type="button" onclick="removeField(this)">Eliminar</button>
+                    `;
+                    // Crear el botón Guardar programáticamente
+                    const botonGuardar = document.createElement('button');
+                    botonGuardar.type = "button";
+                    botonGuardar.innerText = "Guardar";
+                    botonGuardar.addEventListener('click', function() {
+                        guardarPregunta(textoPregunta, type, valores);
+                    });
+
+                    // Añadir el botón Guardar al newField
+                    newField.appendChild(botonGuardar);
+                }
+            } else if (type === 'checkbox') {
+                let numeroDeOpciones = prompt("¿Cuantas opciones desea agregar?");
+                if (numeroDeOpciones !== null && numeroDeOpciones !== '') {
+                    var valorSelect;
+                    var valores = [];
+                    let opcionesInner = "";
+                    for (let i = 0; i < numeroDeOpciones; i++) {
+                        valorSelect = prompt("Digite la opción");
+                        valores.push(valorSelect);
+                    }
+
+                    valores.forEach(function(valor) {
+                        opcionesInner += `<br><input type="checkbox"> ${valor}`
+                    })
+
+                    newField.innerHTML = `
+                    <div class="field-input mt-3">
+                        <label class="uppercase"> 
+                            ${textoPregunta}
+                            <br>
+                                ${opcionesInner}
                         </label>
                     </div>
                     <button type="button" onclick="removeField(this)">Eliminar</button>

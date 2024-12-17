@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Questions;
 use App\Models\SelectsModel;
 use App\Models\FormModel;
+use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -61,7 +63,7 @@ class TemplateController extends Controller
 
         $validated = $request->validate([
             'texto_de_pregunta' => 'required|string|max:255',
-            'tipo_de_pregunta' => 'required|string|in:textarea,text,select,number,date,image',
+            'tipo_de_pregunta' => 'required|string|in:textarea,text,select,number,date,image,checkbox',
             'texto_selects' => 'nullable|array',
             'texto_selects.*' => 'string|max:255', // Cada opción debe ser una cadena válida
         ]);
@@ -82,88 +84,98 @@ class TemplateController extends Controller
                 $opcionPregunta->save();
             }
         }
-
     }
 
     // Función para crear formulario dependiendo los cambios realizados en la plantilla
     public function crearFormulario(Request $request)
     {
 
-        // Validar los datos
-        $validacionDeFormulario = $request->validate([
-            'titulo' => 'required|string|max:255|unique:forms,titulo',
-            'descripcion' => 'required|string',
-        ]);
+        try {
+            // Validar los datos
+            $validacionDeFormulario = $request->validate([
+                'titulo' => 'required|string|max:255|unique:forms,titulo',
+                'descripcion' => 'required|string',
+            ]);
 
 
-        $usuario = Auth::user();
+            $usuario = Auth::user();
 
-        $dependencia = 0;
+            $dependencia = 0;
 
-        // Asignación de id de dependencia
-        if ($usuario->dependencia === 'secretaria de salud') {
-            $dependencia = 7;
-        } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
-            $dependencia = 7;
-        } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
-            $dependencia = 8;
-        } elseif (($usuario->dependencia === 'secretaria administrativa')) {
-            $dependencia = 9;
-        } elseif (($usuario->dependencia === 'secretaria de la mujer')) {
-            $dependencia = 10;
-        } elseif (($usuario->dependencia === 'secretaria de gestion social')) {
-            $dependencia = 11;
-        } elseif (($usuario->dependencia === 'secretaria de cultura')) {
-            $dependencia = 12;
-        } elseif (($usuario->dependencia === 'secretaria de infraestructura')) {
-            $dependencia = 13;
-        } elseif (($usuario->dependencia === 'secretaria de desarrollo')) {
-            $dependencia = 14;
-        } elseif (($usuario->dependencia === 'oficina gestion del riesgo')) {
-            $dependencia = 15;
-        } elseif (($usuario->dependencia === 'oficina de turismo')) {
-            $dependencia = 16;
-        }
-
-
-        // Crear el nuevo formulario
-        $formulario = new FormModel($validacionDeFormulario);
-        $formulario->titulo = $request->input('titulo');
-        $formulario->descripcion = $request->input('descripcion');
-        if ($formulario->save()) {
+            // Asignación de id de dependencia
+            if ($usuario->dependencia === 'secretaria de salud') {
+                $dependencia = 7;
+            } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
+                $dependencia = 7;
+            } elseif (($usuario->dependencia === 'secretaria de planeacion')) {
+                $dependencia = 8;
+            } elseif (($usuario->dependencia === 'secretaria administrativa')) {
+                $dependencia = 9;
+            } elseif (($usuario->dependencia === 'secretaria de la mujer')) {
+                $dependencia = 10;
+            } elseif (($usuario->dependencia === 'secretaria de gestion social')) {
+                $dependencia = 11;
+            } elseif (($usuario->dependencia === 'secretaria de cultura')) {
+                $dependencia = 12;
+            } elseif (($usuario->dependencia === 'secretaria de infraestructura')) {
+                $dependencia = 13;
+            } elseif (($usuario->dependencia === 'secretaria de desarrollo')) {
+                $dependencia = 14;
+            } elseif (($usuario->dependencia === 'oficina gestion del riesgo')) {
+                $dependencia = 15;
+            } elseif (($usuario->dependencia === 'oficina de turismo')) {
+                $dependencia = 16;
+            }
 
 
-            // Asociar preguntas seleccionadas al formulario con id_section
-            if ($request->has('preguntas')) {
-                foreach ($request->input('preguntas') as $preguntaId) {
-                    // Obtener la pregunta
-                    $pregunta = Questions::find($preguntaId);
+            // Crear el nuevo formulario
+            $formulario = new FormModel($validacionDeFormulario);
+            $formulario->titulo = $request->input('titulo');
+            $formulario->descripcion = $request->input('descripcion');
+            if ($formulario->save()) {
 
-                    // Si la pregunta tiene sección, asociarla con el formulario
-                    if ($pregunta) {
 
-                        $idSection = $pregunta->id_section ?? $dependencia;
-                        // Asociar la pregunta al formulario incluyendo el id_section
+                // Asociar preguntas seleccionadas al formulario con id_section
+                if ($request->has('preguntas')) {
+                    foreach ($request->input('preguntas') as $preguntaId) {
+                        // Obtener la pregunta
+                        $pregunta = Questions::find($preguntaId);
 
-                        $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
+                        // Si la pregunta tiene sección, asociarla con el formulario
+                        if ($pregunta) {
+
+                            $idSection = $pregunta->id_section ?? $dependencia;
+                            // Asociar la pregunta al formulario incluyendo el id_section
+
+                            $formulario->preguntas()->attach($preguntaId, ['id_section' => $idSection]);
+                        }
+                    }
+                }
+                // Si se añaden preguntas nuevas
+                if ($request->has('nuevas_preguntas')) {
+                    foreach ($request->input('nuevas_preguntas') as $nuevaPregunta) {
+                        $pregunta = Questions::create([
+                            'id_section' => $dependencia,
+                            'texto_de_pregunta' => $nuevaPregunta['texto_de_pregunta'],
+                            'tipo_de_pregunta' => $nuevaPregunta['tipo_de_pregunta'],
+                            'visible' => $nuevaPregunta['visible'] ?? true,
+                        ]);
+
+                        $formulario->preguntas()->attach($pregunta->id);
                     }
                 }
             }
-            // Si se añaden preguntas nuevas
-            if ($request->has('nuevas_preguntas')) {
-                foreach ($request->input('nuevas_preguntas') as $nuevaPregunta) {
-                    $pregunta = Questions::create([
-                        'id_section' => $dependencia,
-                        'texto_de_pregunta' => $nuevaPregunta['texto_de_pregunta'],
-                        'tipo_de_pregunta' => $nuevaPregunta['tipo_de_pregunta'],
-                        'visible' => $nuevaPregunta['visible'] ?? true,
-                    ]);
 
-                    $formulario->preguntas()->attach($pregunta->id);
-                }
-            }
+            session()->flash('Exito', 'Formulario creado con éxito.');
+            
+            return redirect('home-page');
+            
+
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['titulo' => 'El título ya se encuentra en uso'])
+                ->withInput();
         }
-        return redirect('home-page');
     }
 
     public function show($id)
