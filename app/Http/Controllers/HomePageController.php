@@ -55,7 +55,7 @@ class HomePageController extends Controller
         }
 
 
-        return redirect()->back()->with('success', 'Respuestas guardadas exitosamente')->with('error', 'Mensaje de error');
+        return redirect('home-page');
 
         // return redirect()->back()->with('success', 'Respuestas guardadas exitosamente');
     }
