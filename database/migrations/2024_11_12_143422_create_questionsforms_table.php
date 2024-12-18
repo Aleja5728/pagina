@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_form')->nullable();
             $table->foreign('id_form')->references('id')->on('forms');
+
             $table->unsignedBigInteger('id_question');
             $table->foreign('id_question')->references('id')->on('questions');
-            $table->unsignedBigInteger('id_section');
-            $table->foreign('id_section')->references('id')->on('sections');
+            
             $table->timestamps();
         });
     }

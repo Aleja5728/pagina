@@ -13,16 +13,10 @@ class FormModel extends Model
     protected $fillable = ['titulo',
                             'descripcion'];
 
-                            // Relación con Sección
-    public function secciones()
-    {
-        return $this->hasMany(Section::class, 'id_form');
-    }
-
     // Relación many-to-many con Pregunta
     public function preguntas()
     {
-        return $this->belongsToMany(Questions::class, 'questionsforms', 'id_form', 'id_question')->withPivot('id_section')->withTimestamps();
+        return $this->belongsToMany(Questions::class, 'questionsforms', 'id_form', 'id_question');
     }
 
     use HasFactory;

@@ -13,9 +13,6 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id(); // Identificador de la pregunta
-            // // Referencia a tabla section
-            $table->unsignedBigInteger('id_section');
-            $table->foreign('id_section')->references('id')->on('sections');
             $table->string('texto_de_pregunta'); // Texto que contiene la pregunta
             $table->string('tipo_de_pregunta');
             $table->boolean('visible')->default(false); // Indica si la pregunta esta activa
