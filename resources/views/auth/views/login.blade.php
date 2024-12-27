@@ -32,8 +32,6 @@
         @error('password') {{$message}} @enderror
 
 
-        <a href="{{ url('olvido-clave') }}"
-            class="text-xs text-right text-[#3264A2] mt-[2%] font-medium">¿Has olvidado tu contraseña?</a>
 
         <input type="submit" value="Iniciar sesión"
             class="w-full h-10 bg-[#3DAE2B] rounded-md mt-[7%] cursor-pointer hover:bg-[#3FC828]/80 font-medium leading-8">

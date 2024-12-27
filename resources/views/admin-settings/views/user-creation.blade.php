@@ -95,11 +95,10 @@
                                 </form>
 
                                 <!-- Elimina usuarios lógicamente, deshabilita -->
-                                <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="post"
-                                    class="eliminar_usuario">
+                                <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="post"  class="eliminar_usuario" id="eliminarForm{{ $usuario->id }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="px-3">
+                                    <button type="button" class="px-3" onclick="confirmarEliminacion({{ $usuario->id }})">
                                         <img src="{{ asset('img/eliminar_crud.png') }}" alt="eliminar usuario"
                                             class="w-6">
                                     </button>
@@ -150,4 +149,18 @@
 @section('script')
     <script src="{{ asset('js/crear_usuario.js') }}"></script>
 
+    <script>
+   function confirmarEliminacion(usuarioId) {
+    console.log('ID del formulario: ', 'eliminarForm' + usuarioId);  
+    const form = document.getElementById('eliminarForm' + usuarioId);
+    if (form) {
+        if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+            form.submit();
+        }
+    } else {
+        console.error('Formulario no encontrado para el usuario con ID: ' + usuarioId);
+    }
+}
+
+</script>
 @endsection

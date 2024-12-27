@@ -10,7 +10,7 @@
 <div class="select-none">
     <div class="absolute right-7 top-3">
         <button>
-            <img src="{{ asset('img/user.png') }}" alt="" class="menu">
+            <img src="{{ auth()->user()->foto_perfil ? asset(auth()->user()->foto_perfil) : asset('img/user.png') }}" alt="Foto de perfil" class="menu rounded-full w-[60px] h-[60px]">
         </button>
     </div>
  
@@ -52,7 +52,7 @@
         <form action=""  class="px-10 py-2 ">
             <!-- Imagen de perfil -->
             <div class="sm:mx-[42%] mx-24 mt-8">
-                <img src="{{ asset('img/icons8-invitado-masculino-90.png') }}" alt="" class="w-36">
+            <img src="{{ auth()->user()->foto_perfil ? asset(auth()->user()->foto_perfil) : asset('img/user.png') }}" alt="Foto de perfil" class="rounded-full w-28 h-28">
             </div>
 
             <!-- Datos de usuario -->

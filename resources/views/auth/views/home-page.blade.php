@@ -20,7 +20,10 @@
 
 
 
+
+
     @foreach($formulario as $form)
+    @if(auth()->user()->dependencia == $form->dependencia)
     <div class="w-full h-72 rounded-3xl border-2 shadow-md">
         <div class="w-full h-14 p-5">
             <div class="relative">
@@ -38,6 +41,7 @@
             <p class="text-xs text-gray-400 line-clamp-3"> {{ $form->descripcion }}</p>
         </div>
     </div>
+    @endif
     @endforeach
 </div>
 

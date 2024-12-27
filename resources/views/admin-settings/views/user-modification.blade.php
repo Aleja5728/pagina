@@ -92,8 +92,27 @@
                                     class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
 
                                     <option value="{{ $usuarios->dependencia }}">{{ $usuarios->dependencia }}</option>
-                                    @if ($usuarios->dependencia == 'despacho alcaldia')
-                                        <OPTION VALUE="despacho alcaldia">DESPACHO ALCALDE</OPTION>
+
+                                    @if ($usuarios->dependencia == 'defecto')
+                                    <OPTION VALUE="despacho alcaldia">DESPACHO ALCALDE</OPTION>
+                                        <OPTION VALUE="secretaria administrativa">SECRETARIA ADMINISTRATIVA</OPTION>
+                                        <OPTION VALUE="secretaria de agricultura">SECRETARIA DE AGRICULTURA</OPTION>
+                                        <OPTION VALUE="secretaria de cultura">SECRETARIA DE CULTURA</OPTION>
+                                        <OPTION VALUE="secretaria de desarrollo academico">SECRETARIA DE DESARROLLO
+                                            ECONOMICO
+                                        </OPTION>
+                                        <OPTION VALUE="secretaria de educacion">SECRETARIA DE EDUCACION</OPTION>
+                                        <OPTION VALUE="secretaria de gabinete">SECRETARIA DE GABINETE</OPTION>
+                                        <OPTION VALUE="secretaria de gestion social">SECRETARIA DE GESTION SOCIAL</OPTION>
+                                        <OPTION VALUE="secretaria de gobierno">SECRETARIA DE GOBIERNO</OPTION>
+                                        <OPTION VALUE="secretaria de hacienda">SECRETARIA DE HACIENDA</OPTION>
+                                        <OPTION VALUE="secretaria de infraestructura">SECRETARIA DE INFRAESTRUCTURA</OPTION>
+                                        <OPTION VALUE="secretaria de la mujer">SECRETARIA DE LA MUJER</OPTION>
+                                        <OPTION VALUE="secretaria de movilidad">SECRETARIA DE MOVILIDAD</OPTION>
+                                        <OPTION VALUE="secretaria de planeacion">SECRETARIA DE PLANEACION</OPTION>
+                                        <OPTION VALUE="secretaria de salud">SECRETARIA DE SALUD</OPTION>
+                                        <OPTION VALUE="secretaria juridica">SECRETARIA JURIDICA</OPTION>
+                                    @elseif ($usuarios->dependencia == 'despacho alcaldia')
                                         <OPTION VALUE="secretaria administrativa">SECRETARIA ADMINISTRATIVA</OPTION>
                                         <OPTION VALUE="secretaria de agricultura">SECRETARIA DE AGRICULTURA</OPTION>
                                         <OPTION VALUE="secretaria de cultura">SECRETARIA DE CULTURA</OPTION>
