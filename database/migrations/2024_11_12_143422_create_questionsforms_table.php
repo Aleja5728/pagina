@@ -15,8 +15,13 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_form')->nullable();
             $table->foreign('id_form')->references('id')->on('forms');
+
             $table->unsignedBigInteger('id_question');
             $table->foreign('id_question')->references('id')->on('questions');
+<<<<<<< HEAD
+=======
+            
+>>>>>>> gitea/main
             $table->timestamps();
         });
     }

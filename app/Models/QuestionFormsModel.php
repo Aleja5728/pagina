@@ -14,6 +14,5 @@ class QuestionFormsModel extends Model
     protected $fillable = [
         'id_form',
         'id_question',
-        'id_section', // Guardamos el id_section en la tabla pivote
     ];
 }
