@@ -98,7 +98,7 @@
                                 <form action="{{ route('usuarios.destroy', $usuario->id) }}" method="post"  class="eliminar_usuario" id="eliminarForm{{ $usuario->id }}">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="px-3" onclick="confirmarEliminacion({{ $usuario->id }})">
+                                    <button type="button" class="px-3" onclick="confirmarEliminacion('{{ $usuario->id }}')">
                                         <img src="{{ asset('img/eliminar_crud.png') }}" alt="eliminar usuario"
                                             class="w-6">
                                     </button>
