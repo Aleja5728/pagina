@@ -148,9 +148,6 @@
                 <button type="button" id="botonCheck" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Checkbox </button>
             </div>
 
-            <div>
-                <p class="text-gray-400 p-6 text-sm">™ Recarga la página después de crear el nuevo campo</p>
-            </div>
 
         </div>
     </div>

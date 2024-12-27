@@ -31,12 +31,8 @@
             class="w-full rounded-md mt-[3%] text-[#666] ring-1 ring-inset ring-gray-100 border-gray-300 placeholder:text-gray-400 outline-none">
         @error('password') {{$message}} @enderror
 
-
-        <a href="{{ url('olvido-clave') }}"
-            class="text-xs text-right text-[#3264A2] mt-[2%] font-medium">¿Has olvidado tu contraseña?</a>
-
         <input type="submit" value="Iniciar sesión"
-            class="w-full h-10 bg-[#3DAE2B] rounded-md mt-[7%] cursor-pointer hover:bg-[#3FC828]/80 font-medium leading-8">
+            class="w-full h-10 bg-[#3DAE2B] rounded-md mt-[10%] cursor-pointer hover:bg-[#3FC828]/80 font-medium leading-8">
     </form>
 </div>
 @endsection

@@ -7,7 +7,7 @@
     <!-- Menú superior derecho -->
     <x-dropdown-menu> </x-dropdown-menu>
 
-    <div class="sm:grid sm:grid-cols-3 sm:gap-x-6 sm:m-10 sm:mt-12 select-none mx-5 my-10">
+    <div class="sm:grid sm:grid-cols-2 sm:gap-x-6 sm:m-10 sm:mt-12 select-none mx-5 my-10">
 
         @can('usuarios')  <!-- Bloquear sección dependiendo el permiso -->
         <a href="{{ route('usuarios.index') }}">
@@ -41,20 +41,7 @@
             </div>
         </a>
 
-        <a href="#">
-            <div>
-                <button
-                    class="boton_formularios h-24 sm:h-36 sm:m-2 w-full mt-4 bg-gradient-to-r from-[#EF5751] to-[#EB312A] shadow-md hover:from-[#EB312A] hover:to-[#EF5751]">
-                    <div class="absolute ml-5 mt-2 sm:ml-3 sm:mt-2">
-                        <img src="{{ asset('img/navegador.png') }}" alt="" class="w-10 sm:w-12">
-                    </div>
-                    <div class="relative right-0">
-                        <p class="sm:text-xl text-l text-white font-normal font-montserrat text-right sm:mt-24 mt-8 mr-6">EDITAR FORMULARIOS
-                        </p>
-                    </div>
-                </button>
-            </div>
-        </a>
+        
 
 
     </div>
