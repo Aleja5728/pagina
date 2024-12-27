@@ -68,9 +68,11 @@ class TemplateController extends Controller
                 'descripcion' => 'required|string',
             ]);
 
+            $usuario = Auth::user();
 
             // Crear el nuevo formulario
             $formulario = new FormModel($validacionDeFormulario);
+            $formulario->dependencia = $usuario->dependencia;
             $formulario->titulo = $request->input('titulo');
             $formulario->descripcion = $request->input('descripcion');
             if ($formulario->save()) {

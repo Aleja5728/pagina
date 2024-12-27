@@ -10,7 +10,8 @@ class FormModel extends Model
 
     protected $table = 'forms';
 
-    protected $fillable = ['titulo',
+    protected $fillable = [ 'dependencia',
+                            'titulo',
                             'descripcion'];
 
     // Relación many-to-many con Pregunta
