@@ -15,7 +15,7 @@ return new class extends Migration
             $table -> id();
             $table -> string("nombre");
             $table -> string("apellido");
-            $table -> string("numero_documento");
+            $table -> integer("numero_documento");
             $table -> string("genero");
             $table -> string("telefono");
             $table -> string("email") -> unique();
