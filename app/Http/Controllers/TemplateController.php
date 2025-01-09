@@ -16,14 +16,14 @@ class TemplateController extends Controller
     // Función para llamar a la página de la plantilla
     public function index()
     {
-        // Llama los registros de la tabla Questions con las preguntas principales juntos con las dependientes 
+        // Llama los registros de la tabla Questions con las preguntas principales 
         $preguntas = DB::table('questions')->get();
 
         // Llama los registros de la tabla Selects
         $selects = DB::table('selects')->get();
 
 
-        // Se envían las preguntas principales, dependientes y los select a la vista
+        // Se envían las preguntas principales y los select a la vista
         return view('form-settings.views.template-page', compact('preguntas', 'selects'));
     }
 
