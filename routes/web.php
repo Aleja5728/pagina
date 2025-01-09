@@ -20,7 +20,7 @@ Route::middleware('throttle:10')->group(function () {
 
 
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth'])->group(function () {
     // RUTAS DE INICIO
     Route::controller(HomePageController::class)->group(function () {
         Route::get('/home-page', 'index')->name("home-page");
@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 });
 
-Route::middleware(['auth', 'can:usuarios'])->group(function () {
+Route::middleware(['auth', 'can:usuarios'])->group(function () { // Bloquea las rutas según el rol que tenga el permiso para acceder a usuarios
     // RUTAS DE CONFIGURACION DE USUARIOS
     Route::resource("usuarios", UsersController::class)->names("usuarios");
 

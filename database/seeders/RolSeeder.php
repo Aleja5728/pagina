@@ -21,14 +21,14 @@ class RolSeeder extends Seeder
         $rol2 = Role::create(['name' => 'Creador']);
 
         //     Ejecutar exclusivamente el seeder 
-        //     php artisan db:seed --class=RoleSeeder
+        //     php artisan db:seed --class=RolSeeder
         //     php artisan migrate:fresh --seed
 
         // Creación de permisos
 
         // Vistas de inicio, pagina de inicio y de configuración
-        Permission::create(['name' => 'home-page'])->syncRoles([$rol1,]); // 1
-        Permission::create(['name' => 'settings-view'])->syncRoles([$rol1]); // 2 
+        Permission::create(['name' => 'home-page'])->syncRoles([$rol1, $rol2]); // 1
+        Permission::create(['name' => 'settings-view'])->syncRoles([$rol1, $rol2]); // 2 
 
         // Vista de configuración de usuarios
         Permission::create(['name' => 'usuarios'])->assignRole($rol1); // 3 
