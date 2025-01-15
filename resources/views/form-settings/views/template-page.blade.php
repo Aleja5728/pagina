@@ -85,10 +85,6 @@
                             <input type="time" class="form-control w-full">
                             @break
 
-                            @case('image')
-                            <input type="file" class="form-control w-full">
-                            @break
-
                             @case('email')
                             <input type="email" class="form-control w-full">
                             @break
@@ -144,7 +140,6 @@
                 <button type="button" id="botonNumber" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Número </button>
                 <button type="button" id="botonSelect" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Selección </button>
                 <button type="button" id="botonDate" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Fecha </button>
-                <button type="button" id="botonImage" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Imagen </button>
                 <button type="button" id="botonCheck" draggable="true" class="w-full h-10 rounded-md bg-gray-100 cursor-move"> Checkbox </button>
             </div>
 
@@ -214,10 +209,6 @@
         {
             id: 'botonDate',
             type: 'date'
-        },
-        {
-            id: 'botonImage',
-            type: 'image'
         },
         {
             id: 'botonCheck',
@@ -381,18 +372,7 @@
                     <button type="button" onclick="removeField(this)">Eliminar</button>
                     <button type="button" onclick="guardarPregunta('${textoPregunta}','${type}')">Guardar</button>
                     `;
-            } else if (type === 'image') {
-                newField.innerHTML = `
-                    <div class="field-input mt-3">
-                        <label class="uppercase"> 
-                            ${textoPregunta}
-                            <input type="file" class="w-full">
-                        </label>
-                    </div>
-                    <button type="button" onclick="removeField(this)">Eliminar</button>
-                    <button type="button" onclick="guardarPregunta('${textoPregunta}','${type}')">Guardar</button>
-                    `;
-            }
+            } 
             espacioNuevo.appendChild(newField);
         }
     }

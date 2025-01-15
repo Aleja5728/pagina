@@ -25,6 +25,7 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(HomePageController::class)->group(function () {
         Route::get('/home-page', 'index')->name("home-page");
         Route::post('/home-page', 'store')->name("respuesta_formularios");
+
         Route::get('/settings-view', 'show')->name("settings-view");
     });
 });

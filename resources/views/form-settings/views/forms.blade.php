@@ -68,10 +68,6 @@
                 @case('textarea')
                 <textarea name="respuesta[{{ $pregunta->id }}]" class="w-full"></textarea>
                 @break
-                
-                @case(image')
-                <input type="file" name="respuesta[{{ $pregunta->id }}]" class="form-control w-full">
-                @break
 
                 @case('select')
                 <select name="respuesta[{{ $pregunta->id }}]" id="" class="form-control w-full pregunta-principal">

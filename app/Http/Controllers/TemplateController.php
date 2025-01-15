@@ -34,7 +34,7 @@ class TemplateController extends Controller
 
         $validated = $request->validate([
             'texto_de_pregunta' => 'required|string|max:255',
-            'tipo_de_pregunta' => 'required|string|in:textarea,text,select,number,date,image,checkbox',
+            'tipo_de_pregunta' => 'required|string|in:textarea,text,select,number,date,checkbox',
             'texto_selects' => 'nullable|array',
             'texto_selects.*' => 'string|max:255', // Cada opción debe ser una cadena válida
         ]);
