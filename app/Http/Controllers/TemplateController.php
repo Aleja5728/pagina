@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Questions;
 use App\Models\SelectsModel;
+use App\Models\FormsDependencies;
 use App\Models\FormModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -33,7 +34,7 @@ class TemplateController extends Controller
 
 
         $validated = $request->validate([
-            'texto_de_pregunta' => 'required|string|max:255',
+            'texto_de_pregunta' => 'required|string|max:255|unique:questions,texto_de_pregunta',
             'tipo_de_pregunta' => 'required|string|in:textarea,text,select,number,date,checkbox',
             'texto_selects' => 'nullable|array',
             'texto_selects.*' => 'string|max:255', // Cada opción debe ser una cadena válida
@@ -66,13 +67,21 @@ class TemplateController extends Controller
             $validacionDeFormulario = $request->validate([
                 'titulo' => 'required|string|max:255|unique:forms,titulo',
                 'descripcion' => 'required|string',
+                'preguntas' => 'required|array|min:1',  // Aseguramos que se seleccionen al menos una pregunta
+                'preguntas.*' => 'exists:questions,id'
+            ], [
+                'titulo.required' => 'El título es obligatorio. Por favor, ingresa un título para el formulario.',
+                'titulo.unique' => 'Este título ya está en uso. Elige otro título para el formulario.',
+                'preguntas.required' => 'Debes seleccionar al menos una pregunta para el formulario.',
+                'preguntas.min' => 'El formulario debe contener al menos una pregunta seleccionada.',
+                'preguntas.*.exists' => 'Una de las preguntas seleccionadas no es válida.',
             ]);
 
             $usuario = Auth::user();
 
             // Crear el nuevo formulario
             $formulario = new FormModel($validacionDeFormulario);
-            $formulario->dependencia = $usuario->dependencia;
+            $formulario->dependencia = $usuario->dependencia->id;
             $formulario->titulo = $request->input('titulo');
             $formulario->descripcion = $request->input('descripcion');
             if ($formulario->save()) {
@@ -101,15 +110,36 @@ class TemplateController extends Controller
                         $formulario->preguntas()->attach($pregunta->id);
                     }
                 }
+                FormsDependencies::create([
+                    'id_form' => $formulario->id,
+                    'id_dependencia' => $usuario->dependencia->id,  // Aquí estamos asociando el formulario con la dependencia
+                ]);
             }
 
             session()->flash('Exito', 'Formulario creado con éxito.');
 
             return redirect('home-page');
-        } catch (\Exception $e) {
+        } catch (\Illuminate\Validation\ValidationException $e) {
+           
+
+            $errors = $e->errors();
+            
+            if (isset($errors['titulo'])) {
+                return redirect()->back()
+                    ->withErrors(['titulo' => $errors['titulo'][0]])  // Mostrar el error del título
+                    ->withInput();
+            }
+        
+            // Si hay un error con las preguntas
+            if (isset($errors['preguntas'])) {
+                return redirect()->back()
+                    ->withErrors(['preguntas' => $errors['preguntas'][0]])  // Mostrar el error de preguntas
+                    ->withInput();
+            }
+
             return redirect()->back()
-                ->withErrors(['titulo' => 'El título ya se encuentra en uso'])
-                ->withInput();
+            ->withErrors($errors)
+            ->withInput();
         }
     }
 

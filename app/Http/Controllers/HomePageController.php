@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Questions;
 use App\Models\SelectsModel;
 use App\Models\FormsAnswers;
+use App\Models\Dependencies;
 use App\Models\FormModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -30,17 +31,29 @@ class HomePageController extends Controller
             ->groupBy('forms.id', 'forms.titulo')
             ->get();
 
+        $dependencias = Dependencies::withCount('forms')->get();
+
+        $totalFormularios = [
+            'labels' => $dependencias->pluck('dependencia'),
+            'data' => $dependencias->pluck('forms_count')
+        ];
+
         $datos = [
             'labels' => $formularios->pluck('titulo'), // Nombre del formulario
             'data' => $formularios->pluck('total_respuestas'), // Total respuestas
         ];
 
-        return view("auth.views.home-page", compact('usuarios', 'formulario', 'preguntasFormulario', 'preguntas', 'preguntasDependientes', 'datos'));
+        return view("auth.views.home-page", compact('usuarios', 'formulario', 'preguntasFormulario', 'preguntas', 'preguntasDependientes', 'datos', 'totalFormularios'));
     }
 
     // Función para guardar respuestas de formularios
     public function store(Request $request)
     {
+        $request->validate([
+            'id_form' => 'required|exists:forms,id',  // Valida que el formulario exista en la base de datos
+            'respuesta' => 'required',
+            'respuesta.*' => 'required'
+        ]);
 
         $formularioId = $request->input('id_form');
         // Se asegura de que el formulario al que estan respondiendo, si exista correctamente en la base de datos
@@ -78,7 +91,11 @@ class HomePageController extends Controller
         $totalRespuestas = FormsAnswers::where('id_form', $formularioId)->count();
 
 
-        return redirect('home-page');
+        if (empty($request->input('respuesta'))) {
+            return back()->withErrors(['respuesta' => 'No se proporcionaron respuestas.']);
+        } else {
+            return redirect('home-page');
+        }
 
         // return redirect()->back()->with('success', 'Respuestas guardadas exitosamente');
     }

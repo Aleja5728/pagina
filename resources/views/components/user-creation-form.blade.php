@@ -1,3 +1,5 @@
+
+
 <!-- Formulario para creación de usuarios -->
 <section class=" formulario fixed w-full h-[80%] modal top-14 select-none">
     <div class="bg-gray-100 w-5/6 h-full mx-auto overflow-y-auto mt-2">
@@ -75,26 +77,15 @@
                         <label 
                             class="block text-sm font-medium leading-6 text-gray-900">Dependencia</label>
                         <div class="mt-2">
-                            <select name="dependencia"
-                                class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
-                                <option value="defecto">SELECCIONE UNA OPCION</option>
-                                <option value="despacho alcaldia">DESPACHO ALCALDE</option>
-                                <option value="secretaria administrativa">SECRETARIA ADMINISTRATIVA</option>
-                                <option value="secretaria de agricultura y ambiente">SECRETARIA DE AGRICULTURA Y AMBIENTE</option>
-                                <option value="secretaria de cultura">SECRETARIA DE CULTURA</option>
-                                <option value="secretaria de desarrollo academico y competitividad">SECRETARIA DE DESARROLLO ECONOMICO Y COMPETITIVIDAD
-                                </option>
-                                <option value="secretaria de educacion">SECRETARIA DE EDUCACION</option>
-                                <option value="secretaria de gabinete y buen gobierno">SECRETARIA DE GABINETE Y BUEN GOBIERNO</option>
-                                <option value="secretaria de gestion social">SECRETARIA DE GESTION SOCIAL</option>
-                                <option value="secretaria de gobierno secretaria y convivencia">SECRETARIA DE GOBIERNO, SEGURIDAD Y CONVIVENCIA</option>
-                                <option value="secretaria de hacienda">SECRETARIA DE HACIENDA</option>
-                                <option value="secretaria de infraestructura">SECRETARIA DE INFRAESTRUCTURA</option>
-                                <option value="secretaria de mujer y gobierno">SECRETARIA DE MUJER Y GOBIERNO</option>
-                                <option value="secretaria de movilidad">SECRETARIA DE MOVILIDAD</option>
-                                <option value="secretaria de planeacion">SECRETARIA DE PLANEACION</option>
-                                <option value="secretaria de salud">SECRETARIA DE SALUD</option>
-                                <option value="secretaria juridica">SECRETARIA JURIDICA</option>
+                            <select name="id_dependencia" required
+                            class="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus-ring-inset focus-ring-indigo-600 sm-text-sm sm-leading-6 outline-none">
+                                @if ($dependencias->isNotEmpty())
+                                @foreach ($dependencias as $dependencia)
+                                    <option value="{{ $dependencia->id }}">{{ $dependencia->dependencia }}</option>
+                                @endforeach
+                            @else
+                                <option value="">No hay dependencias disponibles</option>
+                            @endif
                             </select>
                         </div>
                     </div>

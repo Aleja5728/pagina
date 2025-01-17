@@ -20,5 +20,10 @@ class FormModel extends Model
         return $this->belongsToMany(Questions::class, 'questionsforms', 'id_form', 'id_question');
     }
 
+    public function formsDependencies()
+    {
+        return $this->hasMany(FormsDependencies::class, 'id_form');
+    }
+
     use HasFactory;
 }
