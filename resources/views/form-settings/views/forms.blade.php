@@ -36,7 +36,7 @@
 
                             <input type="hidden" name="id_form" value="{{ $form->id }}">
                             <br>
-                            <h1 class="uppercase text-center font-bold text-lg p-0 " style="white-space: pre-wrap;">
+                            <h1 class="uppercase text-center font-bold text-lg p-0">
                                 {{ $form->titulo }}</h1><br>
                             <h2 class="px-16" style="white-space: pre-wrap;">{{ $form->descripcion }}</h2><br>
                         </div>
