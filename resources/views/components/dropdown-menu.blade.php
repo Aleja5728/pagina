@@ -85,7 +85,7 @@
                     <label for="dependencia"
                         class="block text-sm font-medium leading-6 text-gray-900">Dependencia</label>
                     <div class="mt-2">
-                        <input type="text" name="dependencia" value="{{ auth()->user()->dependencia ?? " " }}" id="dependencia" disabled
+                        <input type="text" name="dependencia" value="{{ auth()->user()->dependencia->dependencia ?? " " }}" id="dependencia" disabled
                             autocomplete="given-name"
                             class="block w-full rounded-md border-[1px] p-1.5 text-gray-900 shadow-sm border-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 outline-none">
                     </div>

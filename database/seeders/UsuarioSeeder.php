@@ -22,12 +22,12 @@ class UsuarioSeeder extends Seeder
             'genero' => 'femenino',
             'telefono' => '3018451243',
             'email' => 'gabirodriguez24@hotmail.com',
-            'dependencia' => 'secretaria de salud',
             'tipo_funcionario' => 'contratista',
             'rol' => 'Administrador',
             'cargo' => 'pasante',
             'foto_perfil' => '',
-            'password' => bcrypt('clave')
+            'password' => bcrypt('clave'),
+            'id_dependencia' => '1',
         ])->assignRole('Administrador');
 
         User::create([
@@ -37,12 +37,12 @@ class UsuarioSeeder extends Seeder
             'genero' => 'masculino',
             'telefono' => '3152465351',
             'email' => 'LuisRome@hotmail.com',
-            'dependencia' => 'despacho alcaldia',
             'tipo_funcionario' => 'planta',
             'rol' => 'Creador',
             'cargo' => 'pasante',
             'foto_perfil' => '',
-            'password' => bcrypt('ejemplo')
+            'password' => bcrypt('ejemplo'),
+            'id_dependencia' => '10',
         ])->assignRole('Creador');
     }
 }

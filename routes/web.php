@@ -9,11 +9,15 @@ use Illuminate\Http\Request;
 use SebastianBergmann\Template\Template;
 
 // RUTAS PARA INICIAR SESION
-Route::controller(AuthController::class)->group(function () {
-    Route::get('/login', 'index')->name('login');
-    Route::post('/login', 'validacion')->name('validacion-sesion');
-    Route::post('/singout', 'cerrarsesion')->name('cerrar-sesion');
+Route::middleware('throttle:5')->group(function () {  // Limita la cantidad de solicitudes que un usuario pues hacer
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('/login', 'index')->name('login');
+        Route::post('/login', 'validacion')->name('validacion-sesion');
+        Route::post('/singout', 'cerrarsesion')->name('cerrar-sesion');
+    });
 });
+
+
 
 
 Route::middleware(['auth'])->group(function () {
@@ -21,8 +25,8 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(HomePageController::class)->group(function () {
         Route::get('/home-page', 'index')->name("home-page");
         Route::post('/home-page', 'store')->name("respuesta_formularios");
+
         Route::get('/settings-view', 'show')->name("settings-view");
-        
     });
 });
 

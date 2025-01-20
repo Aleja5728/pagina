@@ -1,0 +1,14 @@
+Protección contra inyección SQL 
+    Declaraciones preparadas en el Query Builder y Eloquent ORM, lo que protege automáticamente contra ataques de inyección SQL.
+
+Proteccion CSRF, ataques de falsificación de solicitudes entre sitios
+    Se genera un token único para cada sesión de usuario, que debe enviarse con solicitudes POST, PUT, DELETE o PATCH.
+
+Autenticación de datos
+    Se utiliza Sanctum para autenticar mediante tokens ligeros
+
+Validación de entradas
+    Laravel valida automáticamente las solicitudes entrantes, asegurando que los datos cumplen con reglas predefinidas.
+
+Hashing de contraseñas
+    Laravel utiliza el algoritmo bcrypt por defecto para hashear contraseñas.

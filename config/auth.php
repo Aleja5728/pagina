@@ -1,5 +1,7 @@
 <?php
 
+// Para la autenticación de inicio de sesión, se utiliza laravel sanctum el cual permite el acceso por medio de tokens o sesiones
+
 return [
 
     /*
@@ -19,19 +21,21 @@ return [
     ],
 
     /*
-    |--------------------------------------------------------------------------
-    | Authentication Guards
-    |--------------------------------------------------------------------------
+    |-------------------------------------------------------------------------- 
+    | Guardas de Autenticación
+    |-------------------------------------------------------------------------- 
     |
-    | Next, you may define every authentication guard for your application.
-    | Of course, a great default configuration has been defined for you
-    | which utilizes session storage plus the Eloquent user provider.
+    | A continuación, puedes definir cada guarda de autenticación para tu aplicación.
+    | Por supuesto, se ha definido una excelente configuración predeterminada 
+    | que utiliza el almacenamiento de sesiones junto con el proveedor de usuarios de Eloquent.
     |
-    | All authentication guards have a user provider, which defines how the
-    | users are actually retrieved out of your database or other storage
-    | system used by the application. Typically, Eloquent is utilized.
+    | Todas las guardas de autenticación tienen un proveedor de usuarios, 
+    | que define cómo se recuperan los usuarios de tu base de datos u otro 
+    | sistema de almacenamiento utilizado por la aplicación. 
+    | Normalmente, se utiliza Eloquent.
     |
-    | Supported: "session"
+    | Soportado: "session"
+
     |
     */
 
@@ -46,28 +50,30 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | User Providers
-    |--------------------------------------------------------------------------
+   /*
+    |-------------------------------------------------------------------------- 
+    | Proveedores de Usuarios
+    |-------------------------------------------------------------------------- 
     |
-    | All authentication guards have a user provider, which defines how the
-    | users are actually retrieved out of your database or other storage
-    | system used by the application. Typically, Eloquent is utilized.
+    | Todas las guardas de autenticación tienen un proveedor de usuarios, 
+    | que define cómo se recuperan los usuarios de tu base de datos u otro 
+    | sistema de almacenamiento utilizado por la aplicación. 
+    | Normalmente, se utiliza Eloquent.
     |
-    | If you have multiple user tables or models you may configure multiple
-    | providers to represent the model / table. These providers may then
-    | be assigned to any extra authentication guards you have defined.
+    | Si tienes múltiples tablas o modelos de usuarios, puedes configurar múltiples 
+    | proveedores para representar el modelo o la tabla. Luego, estos proveedores 
+    | pueden ser asignados a cualquier guarda de autenticación adicional que hayas definido.
     |
-    | Supported: "database", "eloquent"
+    | Soportado: "database", "eloquent"
     |
     */
+
 
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\User::class),
-            'table' => 'usuarios'
+            'table' => 'usuarios' // Se define la tabla usuarios para recuperar los datos de ingreso
         ],
 
         // 'users' => [

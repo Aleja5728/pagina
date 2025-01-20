@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\CorreoElectronico;
+use App\Models\Dependencies;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Flasher\Prime\Storage\Storage;
@@ -16,12 +17,16 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         $buscar_usuario = $request->get('buscar_usuario');
+        $dependencias = DB::table('dependencies')->get();
 
+       
+        
         $usuarios = User::where('nombre', 'like', '%' . $buscar_usuario . '%')
             ->orWhere('numero_documento', 'like', '%' . $buscar_usuario . '%')
+            ->with('dependencia')
             ->Paginate(7);
 
-        return view("admin-settings.views.user-creation", compact('usuarios', 'buscar_usuario'));
+        return view("admin-settings.views.user-creation", compact('usuarios', 'buscar_usuario', 'dependencias'));
     }
 
     // Crear usuarios
@@ -45,7 +50,9 @@ class UsersController extends Controller
         $usuarios->genero = $request->genero;
         $usuarios->telefono = $request->telefono;
         $usuarios->email = $request->email;
-        $usuarios->dependencia = $request->dependencia;
+        $usuarios->id_dependencia = $request->id_dependencia;
+
+
         $usuarios->tipo_funcionario = $request->tipo_funcionario;
         $usuarios->rol = $request->rol;
         $usuarios->cargo = $request->cargo;
@@ -96,7 +103,9 @@ class UsersController extends Controller
     public function edit($id)
     {
         $usuarios = User::find($id);
-        return view('admin-settings.views.user-modification', compact('usuarios'));
+        $dependencias = DB::table('dependencies')->get();
+        
+        return view('admin-settings.views.user-modification', compact('usuarios', 'dependencias'));
     }
 
     // Actualizar datos de usuario
@@ -110,7 +119,7 @@ class UsersController extends Controller
         $usuarios->genero = $request->genero;
         $usuarios->telefono = $request->telefono;
         $usuarios->email = $request->email;
-        $usuarios->dependencia = $request->dependencia;
+        $usuarios->id_dependencia = $request->id_dependencia;
         $usuarios->tipo_funcionario = $request->tipo_funcionario;
         $usuarios->rol = $request->rol;
         $usuarios->cargo = $request->cargo;

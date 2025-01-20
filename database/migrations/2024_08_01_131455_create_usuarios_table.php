@@ -19,7 +19,6 @@ return new class extends Migration
             $table -> string("genero");
             $table -> string("telefono");
             $table -> string("email") -> unique();
-            $table -> string("dependencia");
             $table -> string("tipo_funcionario");
             $table -> string("rol");
             $table -> string("cargo");

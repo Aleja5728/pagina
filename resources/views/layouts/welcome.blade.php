@@ -8,7 +8,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
+        
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>@yield('titulo')</title>
     
     @vite(['resources/js/app.js', 'resources/css/app.css'])

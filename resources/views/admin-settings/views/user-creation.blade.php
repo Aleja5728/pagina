@@ -1,3 +1,4 @@
+
 @extends('Layouts.welcome')
 
 @section('titulo', 'Registro usuarios')
@@ -83,7 +84,7 @@
                             <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->apellido }}</td>
                             <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->numero_documento }} </td>
                             <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->telefono }}</td>
-                            <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->dependencia }}</td>
+                            <td class="px-4 py-2 text-left text-[#666]">{{ $usuario->dependencia->dependencia}}</td> <!-- Se accede al campo dependencia de la tabla dependencia -->
                             {{-- <td class="px-4 py-2 text-left text-[#666]"><img src="{{asset($usuario->foto_perfil)}}" alt=""></td> --}}
                             <td class="flex pt-2 select-none">
                                 <form action="{{ route('usuarios.edit', $usuario->id) }}" method="post">
@@ -139,7 +140,7 @@
 
 
     <!-- Formulario de creación -->
-    <x-user-creation-form class="formulario"></x-user-creation-form>
+    <x-user-creation-form class="formulario" :dependencias="$dependencias"></x-user-creation-form>
 
 
 

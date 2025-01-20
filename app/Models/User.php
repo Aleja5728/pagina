@@ -27,4 +27,9 @@ class User extends Authenticatable
         'password', 'cargo', 'token'
     ];
     
+    public function dependencia()
+    {
+        return $this->belongsTo(Dependencies::class, 'id_dependencia');
+    }
+
 }
