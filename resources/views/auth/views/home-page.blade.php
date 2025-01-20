@@ -78,6 +78,13 @@
                     </h3>
                     <hr class="my-4">
                     <p class="text-sm text-gray-600 line-clamp-3">{{ $form->descripcion }}</p>
+                    <div class="flex justify-end"> <!-- Esta clase mueve el contenido a la derecha -->
+                        <form action="{{ route('mostrar.respuestas', $form->id) }}" method="GET">
+                            <button type="submit" class="mt-4 px-4 py-2 bg-green-500 text-sm text-white font-semibold rounded-lg hover:bg-green-600 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                                Descargar Respuestas
+                            </button>
+                        </form>
+                    </div>
                 </div>
             @endforeach
         </div>
@@ -94,6 +101,7 @@
                         </h3>
                         <hr class="my-4">
                         <p class="text-sm text-gray-600 line-clamp-3">{{ $form->descripcion }}</p>
+                        
                     </div>
                 @endif
             @endforeach
@@ -168,11 +176,8 @@
         // Función que guarda la paleta de colores para los gráficos
         const getColor = opacity => {
             const colors = [
-                'rgb(75, 153, 253)', // Azul
                 'rgb(253, 234, 75)', // Amarillo
-                'rgb(75, 253, 159)', // Verde menta
                 'rgb(255, 183, 79)', // Naranja claro
-                'rgb(228, 85, 255)', // Violeta
                 'rgb(0, 204, 255)', // Cian
                 'rgb(255, 94, 77)', // Rojo coral
                 'rgb(255, 103, 215)', // Rosa

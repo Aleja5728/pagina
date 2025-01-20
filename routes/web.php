@@ -24,7 +24,9 @@ Route::middleware(['auth'])->group(function () {
     // RUTAS DE INICIO
     Route::controller(HomePageController::class)->group(function () {
         Route::get('/home-page', 'index')->name("home-page");
-        Route::post('/home-page', 'store')->name("respuesta_formularios");
+
+        Route::post('/home-page', 'store')->name("respuesta_formularios"); // Guardar respuestas
+        Route::get('/respuestas/{id}', [HomePageController::class, 'mostrarRespuestas'])->name('mostrar.respuestas');
 
         Route::get('/settings-view', 'show')->name("settings-view");
     });

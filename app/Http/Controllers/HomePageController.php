@@ -12,6 +12,8 @@ use App\Models\FormModel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
+use App\Exports\RespuestasExport;
+use Maatwebsite\Excel\Facades\Excel;
 class HomePageController extends Controller
 {
     // Función para mostrar la pagina de inicio
@@ -42,6 +44,8 @@ class HomePageController extends Controller
             'labels' => $formularios->pluck('titulo'), // Nombre del formulario
             'data' => $formularios->pluck('total_respuestas'), // Total respuestas
         ];
+
+
 
         return view("auth.views.home-page", compact('usuarios', 'formulario', 'preguntasFormulario', 'preguntas', 'preguntasDependientes', 'datos', 'totalFormularios'));
     }
@@ -103,5 +107,12 @@ class HomePageController extends Controller
     public function show(Request $request)
     {
         return view("auth.views.settings-view");
+    }
+
+    public function mostrarRespuestas($formularioId)
+    {
+
+        return Excel::download(new RespuestasExport($formularioId), 'respuestas.xlsx');
+
     }
 }
